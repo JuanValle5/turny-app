@@ -22,8 +22,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TurnyappTheme {
-                //LoginScreen()
-                RegisterClient()
+                LoginScreen()
+                //RegisterClient()
             }
         }
     }
