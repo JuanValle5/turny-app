@@ -14,9 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,13 +27,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.R
 import com.app.turny.ui.components.EmailField
 import com.app.turny.ui.components.PasswordField
 import com.app.turny.ui.components.PrimaryButton
 import com.app.turny.ui.components.RoleSelector
+
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    viewModel: AuthViewModel = viewModel()
+) {
+
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -38,6 +47,7 @@ fun LoginScreen() {
             .background(Color(0xFFF5F7FA))
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
+
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -45,18 +55,21 @@ fun LoginScreen() {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
+
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             ),
+
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 4.dp
             )
-        ){
+        ) {
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(24.dp),
+
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -74,6 +87,7 @@ fun LoginScreen() {
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
@@ -83,20 +97,61 @@ fun LoginScreen() {
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                RoleSelector()
+                // SELECTOR DE ROL
+                RoleSelector(
+                    selectedRole = uiState.selectedRole,
+                    onRoleSelected = {
+                        viewModel.onRoleChange(it)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                EmailField()
+                // EMAIL
+                EmailField(
+                    value = uiState.email,
+                    onValueChange = {
+                        viewModel.onEmailChange(it)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                PasswordField()
+                // PASSWORD
+                PasswordField(
+                    value = uiState.password,
+                    onValueChange = {
+                        viewModel.onPasswordChange(it)
+                    }
+                )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
+                // ERROR
+                uiState.error?.let {
+
+                    Text(
+                        text = it,
+                        color = Color.Red
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                // LOADING
+                if (uiState.isLoading) {
+
+                    CircularProgressIndicator()
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // BOTÓN LOGIN
                 PrimaryButton(
-                    text = "Iniciar Sesión"
+                    text = "Iniciar Sesión",
+                    onClick = {
+                        viewModel.login()
+                    }
                 )
             }
         }
