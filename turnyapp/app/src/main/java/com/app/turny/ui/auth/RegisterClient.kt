@@ -49,6 +49,8 @@ private val BorderColor = Color(0xFFE5E7EB)
 
 @Composable
 fun RegisterClientScreen(
+    onBackClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     viewModel: RegisterViewModel = viewModel()
 ) {
 
@@ -80,7 +82,9 @@ fun RegisterClientScreen(
             ) {
 
                 IconButton(
-                    onClick = { }
+                    onClick = {
+                        onBackClick()
+                    }
                 ) {
 
                     Icon(
@@ -314,7 +318,10 @@ fun RegisterClientScreen(
                     text = "Inicia sesión",
                     color = PrimaryBlue,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    modifier = Modifier.clickable {
+                        onNavigateToLogin()
+                    }
                 )
             }
         }

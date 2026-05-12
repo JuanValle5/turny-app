@@ -27,6 +27,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.R
 import com.app.turny.ui.components.EmailField
@@ -36,6 +38,7 @@ import com.app.turny.ui.components.RoleSelector
 
 @Composable
 fun LoginScreen(
+    onNavigateToRegister: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
 
@@ -153,6 +156,29 @@ fun LoginScreen(
                         viewModel.login()
                     }
                 )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+
+                    Text(
+                        text = "¿No tienes cuenta? ",
+                        color = Color.Gray
+                    )
+
+                    Text(
+                        text = "Regístrate aquí",
+                        color = Color(0xFF2563EB),
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clickable {
+
+                            onNavigateToRegister()
+                        }
+                    )
+                }
             }
         }
     }
