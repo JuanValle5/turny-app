@@ -3,6 +3,8 @@ package com.app.turny.data.repository
 import com.app.turny.data.remote.RetrofitInstance
 import com.app.turny.data.remote.dto.LoginRequest
 import com.app.turny.data.remote.dto.LoginResponse
+import com.app.turny.data.remote.dto.RegisterRequest
+import com.app.turny.data.remote.dto.RegisterResponse
 import com.app.turny.domain.model.Role
 import com.app.turny.domain.repository.AuthRepository
 
@@ -26,6 +28,37 @@ class AuthRepositoryImpl : AuthRepository {
                 RetrofitInstance.api.loginBusiness(
                     LoginRequest(email, password)
                 )
+            }
+        }
+    }
+
+    override suspend fun register(
+        fullName: String,
+        email: String,
+        phone: String,
+        password: String,
+        role: Role
+    ): RegisterResponse {
+
+        val request = RegisterRequest(
+            email = email,
+            password = password,
+            nombre = fullName, // 🔥 mapeo correcto
+            telefono = phone,
+            tipo = when(role) {
+                Role.CLIENT -> "client"
+                Role.BUSINESS -> "business"
+            } // 🔥 CLAVE
+        )
+
+        return when(role) {
+
+            Role.CLIENT -> {
+                RetrofitInstance.api.registerClient(request)
+            }
+
+            Role.BUSINESS -> {
+                RetrofitInstance.api.registerBusiness(request)
             }
         }
     }
