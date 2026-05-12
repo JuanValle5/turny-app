@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.turny.ui.auth.LoginScreen
+import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
 import com.app.turny.ui.client.RegisterClient
 import com.app.turny.ui.theme.TurnyappTheme
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
             TurnyappTheme {
                 //LoginScreen()
                 //RegisterClient()
-                HomeClientScreen()
+                //HomeClientScreen()
+                HomeBusinessScreen()
             }
         }
     }
