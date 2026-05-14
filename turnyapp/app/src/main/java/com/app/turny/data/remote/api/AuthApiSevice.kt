@@ -1,9 +1,9 @@
 package com.app.turny.data.remote.api
 
-import com.app.turny.data.remote.dto.LoginRequest
-import com.app.turny.data.remote.dto.LoginResponse
-import com.app.turny.data.remote.dto.RegisterRequest
-import com.app.turny.data.remote.dto.RegisterResponse
+import com.app.turny.data.remote.dto.login.LoginRequest
+import com.app.turny.data.remote.dto.login.LoginResponse
+import com.app.turny.data.remote.dto.register.RegisterRequest
+import com.app.turny.data.remote.dto.register.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

@@ -1,4 +1,4 @@
-package com.app.turny.data.remote.dto
+package com.app.turny.data.remote.dto.login
 
 data class LoginRequest(
     val email: String,

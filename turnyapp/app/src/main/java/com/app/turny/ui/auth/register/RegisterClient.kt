@@ -1,4 +1,4 @@
-package com.app.turny.ui.auth
+package com.app.turny.ui.auth.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.turny.ui.auth.register.RegisterViewModel
 import com.app.turny.ui.components.RoleSelector
 
 private val PrimaryBlue = Color(0xFF3B82F6)

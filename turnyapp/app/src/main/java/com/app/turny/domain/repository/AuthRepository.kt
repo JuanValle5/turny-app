@@ -1,7 +1,7 @@
 package com.app.turny.domain.repository
 
-import com.app.turny.data.remote.dto.LoginResponse
-import com.app.turny.data.remote.dto.RegisterResponse
+import com.app.turny.data.remote.dto.login.LoginResponse
+import com.app.turny.data.remote.dto.register.RegisterResponse
 import com.app.turny.domain.model.Role
 
 interface AuthRepository {
