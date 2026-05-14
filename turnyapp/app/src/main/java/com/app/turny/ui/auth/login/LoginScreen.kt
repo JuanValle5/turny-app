@@ -1,4 +1,4 @@
-package com.app.turny.ui.auth
+package com.app.turny.ui.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,8 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.R
+import com.app.turny.ui.auth.login.LoginViewModel
 import com.app.turny.ui.components.EmailField
 import com.app.turny.ui.components.PasswordField
 import com.app.turny.ui.components.PrimaryButton
@@ -39,10 +41,21 @@ import com.app.turny.ui.components.RoleSelector
 @Composable
 fun LoginScreen(
     onNavigateToRegister: () -> Unit,
-    viewModel: AuthViewModel = viewModel()
+
+    onLoginSuccess: () -> Unit,
+
+    viewModel: LoginViewModel = viewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.success) {
+
+        if(uiState.success){
+
+            onLoginSuccess()
+        }
+    }
 
     Column(
         modifier = Modifier

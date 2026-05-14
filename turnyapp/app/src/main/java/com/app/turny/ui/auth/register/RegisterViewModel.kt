@@ -1,4 +1,4 @@
-package com.app.turny.ui.auth
+package com.app.turny.ui.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
