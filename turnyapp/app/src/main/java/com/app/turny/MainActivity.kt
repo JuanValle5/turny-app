@@ -7,6 +7,7 @@ import com.app.turny.navigation.AppNavigation
 import com.app.turny.ui.business.ReservationsBusinessScreen
 import com.app.turny.ui.business.ServicesBusinessScreen
 import com.app.turny.ui.client.AppointmentsScreen
+import com.app.turny.ui.client.ProfileScreen
 import com.app.turny.ui.client.favorites.FavoritesScreen
 import com.app.turny.ui.theme.TurnyappTheme
 
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
                 //ServicesBusinessScreen()
                 //AppointmentsScreen()
                 //FavoritesScreen()
+                //ProfileScreen()
             }
         }
     }
