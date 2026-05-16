@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.app.turny.navigation.AppNavigation
+import com.app.turny.ui.business.ConfigurationBusinessScreen
 import com.app.turny.ui.business.ReservationsBusinessScreen
 import com.app.turny.ui.business.ServicesBusinessScreen
 import com.app.turny.ui.client.AppointmentsScreen
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 //AppointmentsScreen()
                 //FavoritesScreen()
                 //ProfileScreen()
+                //ConfigurationBusinessScreen()
             }
         }
     }
