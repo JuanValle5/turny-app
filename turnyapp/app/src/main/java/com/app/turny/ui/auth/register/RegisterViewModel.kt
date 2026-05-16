@@ -44,6 +44,27 @@ class RegisterViewModel : ViewModel() {
         )
     }
 
+    fun onBusinessTypeChange(type: String) {
+
+        _uiState.value = _uiState.value.copy(
+            businessType = type
+        )
+    }
+
+    fun onBusinessNameChange(name: String) {
+
+        _uiState.value = _uiState.value.copy(
+            businessName = name
+        )
+    }
+
+    fun onBusinessAddressChange(address: String) {
+
+        _uiState.value = _uiState.value.copy(
+            businessAddress = address
+        )
+    }
+
     fun onRoleChange(role: Role) {
 
         _uiState.value = _uiState.value.copy(
@@ -72,7 +93,13 @@ class RegisterViewModel : ViewModel() {
 
                     password = _uiState.value.password,
 
-                    role = _uiState.value.selectedRole
+                    role = _uiState.value.selectedRole,
+
+                    businessType = _uiState.value.businessType,
+
+                    businessName = _uiState.value.businessName,
+
+                    businessAddress = _uiState.value.businessAddress
                 )
 
                 _uiState.value = _uiState.value.copy(

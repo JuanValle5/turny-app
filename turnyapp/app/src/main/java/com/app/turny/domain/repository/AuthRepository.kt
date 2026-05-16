@@ -17,6 +17,9 @@ interface AuthRepository {
         email: String,
         phone: String,
         password: String,
-        role: Role
+        role: Role,
+        businessType: String? = null,
+        businessName: String? = null,
+        businessAddress: String? = null
     ): RegisterResponse
 }

@@ -25,7 +25,7 @@ class AuthRepositoryImpl : AuthRepository {
             }
 
             Role.BUSINESS -> {
-                RetrofitInstance.api.loginBusiness(
+                RetrofitInstance.api.loginClient(
                     LoginRequest(email, password)
                 )
             }
@@ -37,18 +37,34 @@ class AuthRepositoryImpl : AuthRepository {
         email: String,
         phone: String,
         password: String,
-        role: Role
+        role: Role,
+        businessType: String?,
+        businessName: String?,
+        businessAddress: String?
     ): RegisterResponse {
 
         val request = RegisterRequest(
+
             email = email,
+
             password = password,
-            nombre = fullName, // 🔥 mapeo correcto
+
+            nombre = fullName,
+
             telefono = phone,
-            tipo = when(role) {
+
+            tipo = when(role){
+
                 Role.CLIENT -> "client"
+
                 Role.BUSINESS -> "business"
-            } // 🔥 CLAVE
+            },
+
+            categoria = businessType,
+
+            nombreNegocio = businessName,
+
+            direccion = businessAddress
         )
 
         return when(role) {
@@ -58,7 +74,7 @@ class AuthRepositoryImpl : AuthRepository {
             }
 
             Role.BUSINESS -> {
-                RetrofitInstance.api.registerBusiness(request)
+                RetrofitInstance.api.registerClient(request)
             }
         }
     }

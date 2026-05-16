@@ -5,6 +5,8 @@ data class LoginResponse(
 
     val userId: String,
 
+    val perfilId: String,
+
     val tipo: String,
 
     val nombre: String,
