@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
+import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
 
 @Composable
@@ -29,11 +30,28 @@ fun AppNavigation() {
                     )
                 },
 
-                onLoginSuccess = {
+                onClientLoginSuccess = {
 
                     navController.navigate(
                         Screen.HomeClient.route
-                    )
+                    ) {
+
+                        popUpTo(Screen.Login.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+
+                onBusinessLoginSuccess = {
+
+                    navController.navigate(
+                        Screen.HomeBusiness.route
+                    ) {
+
+                        popUpTo(Screen.Login.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -55,6 +73,11 @@ fun AppNavigation() {
         composable(Screen.HomeClient.route) {
 
             HomeClientScreen()
+        }
+
+        composable(Screen.HomeBusiness.route) {
+
+            HomeBusinessScreen()
         }
     }
 }

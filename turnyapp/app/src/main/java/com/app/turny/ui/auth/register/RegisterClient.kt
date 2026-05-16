@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.turny.domain.model.Role
 import com.app.turny.ui.auth.register.RegisterViewModel
 import com.app.turny.ui.components.RoleSelector
 
@@ -208,6 +209,101 @@ fun RegisterClientScreen(
                     )
                 }
             )
+
+            if (uiState.selectedRole == Role.BUSINESS) {
+
+                // TIPO NEGOCIO
+                Text(
+                    text = "Tipo de negocio",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                CustomField(
+
+                    value = uiState.businessType,
+
+                    onValueChange = {
+                        viewModel.onBusinessTypeChange(it)
+                    },
+
+                    placeholder = "Barbería, Restaurante...",
+
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = GrayText
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // NOMBRE NEGOCIO
+                Text(
+                    text = "Nombre del negocio",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                CustomField(
+
+                    value = uiState.businessName,
+
+                    onValueChange = {
+                        viewModel.onBusinessNameChange(it)
+                    },
+
+                    placeholder = "Nombre del negocio",
+
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = GrayText
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // DIRECCIÓN
+                Text(
+                    text = "Dirección",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                CustomField(
+
+                    value = uiState.businessAddress,
+
+                    onValueChange = {
+                        viewModel.onBusinessAddressChange(it)
+                    },
+
+                    placeholder = "Dirección del negocio",
+
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = GrayText
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

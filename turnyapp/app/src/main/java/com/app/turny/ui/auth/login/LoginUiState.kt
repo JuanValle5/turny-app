@@ -8,5 +8,6 @@ data class LoginUiState(
     val selectedRole: Role = Role.CLIENT,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val success: Boolean = false
+    val success: Boolean = false,
+    val userType: String = ""
 )

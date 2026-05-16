@@ -39,20 +39,29 @@ class LoginViewModel : ViewModel() {
             try {
 
                 val response = repository.login(
+
                     email = _uiState.value.email,
+
                     password = _uiState.value.password,
+
                     role = _uiState.value.selectedRole
                 )
 
                 _uiState.value = _uiState.value.copy(
+
                     isLoading = false,
-                    success = true
+
+                    success = true,
+
+                    userType = response.tipo
                 )
 
             } catch (e: Exception) {
 
                 _uiState.value = _uiState.value.copy(
+
                     isLoading = false,
+
                     error = e.message
                 )
             }

@@ -40,9 +40,12 @@ import com.app.turny.ui.components.RoleSelector
 
 @Composable
 fun LoginScreen(
+
     onNavigateToRegister: () -> Unit,
 
-    onLoginSuccess: () -> Unit,
+    onClientLoginSuccess: () -> Unit,
+
+    onBusinessLoginSuccess: () -> Unit,
 
     viewModel: LoginViewModel = viewModel()
 ) {
@@ -53,7 +56,15 @@ fun LoginScreen(
 
         if(uiState.success){
 
-            onLoginSuccess()
+            if(uiState.userType == "client"){
+
+                onClientLoginSuccess()
+            }
+
+            if(uiState.userType == "business"){
+
+                onBusinessLoginSuccess()
+            }
         }
     }
 
