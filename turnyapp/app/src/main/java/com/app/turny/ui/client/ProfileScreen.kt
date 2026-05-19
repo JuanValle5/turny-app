@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.R
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
@@ -29,7 +30,10 @@ import com.app.turny.ui.components.ProfileInfoRow
 
 @Composable
 fun ProfileScreen(
-    onLogout: () -> Unit
+
+    onLogout: () -> Unit,
+
+    viewModel: ProfileViewModel = viewModel()
 ) {
 
     Column(
@@ -167,7 +171,11 @@ fun ProfileScreen(
                 // LOGOUT BUTTON
                 Button(
                     onClick = {
-                        onLogout()
+
+                        viewModel.logout {
+
+                            onLogout()
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()

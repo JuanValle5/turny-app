@@ -57,6 +57,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
 
     implementation("androidx.navigation:navigation-compose:2.8.0")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     implementation(libs.androidx.compose.foundation.layout)
 
     testImplementation(libs.junit)

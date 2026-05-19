@@ -1,6 +1,9 @@
 package com.app.turny.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,15 +12,21 @@ import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
 import com.app.turny.ui.client.ProfileScreen
+import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
 
+    val splashViewModel: SplashViewModel = viewModel()
+
+    val startDestination by
+    splashViewModel.startDestination.collectAsState()
+
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = startDestination
     ) {
 
         // LOGIN
