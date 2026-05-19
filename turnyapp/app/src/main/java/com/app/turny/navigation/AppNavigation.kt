@@ -8,6 +8,7 @@ import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
+import com.app.turny.ui.client.ProfileScreen
 
 @Composable
 fun AppNavigation() {
@@ -72,12 +73,33 @@ fun AppNavigation() {
         }
         composable(Screen.HomeClient.route) {
 
-            HomeClientScreen()
+            HomeClientScreen(
+
+                onNavigateToProfile = {
+
+                    navController.navigate(
+                        Screen.ProfileClient.route
+                    )
+                }
+            )
         }
 
         composable(Screen.HomeBusiness.route) {
 
             HomeBusinessScreen()
+        }
+        composable(Screen.ProfileClient.route) {
+
+            ProfileScreen(
+
+                onLogout = {
+
+                    navController.navigate(Screen.Login.route){
+
+                        popUpTo(0)
+                    }
+                }
+            )
         }
     }
 }

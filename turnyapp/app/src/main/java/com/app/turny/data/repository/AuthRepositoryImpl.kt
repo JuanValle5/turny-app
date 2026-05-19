@@ -19,13 +19,13 @@ class AuthRepositoryImpl : AuthRepository {
         return when(role) {
 
             Role.CLIENT -> {
-                RetrofitInstance.api.loginClient(
+                RetrofitInstance.api.login(
                     LoginRequest(email, password)
                 )
             }
 
             Role.BUSINESS -> {
-                RetrofitInstance.api.loginClient(
+                RetrofitInstance.api.login(
                     LoginRequest(email, password)
                 )
             }
@@ -70,11 +70,11 @@ class AuthRepositoryImpl : AuthRepository {
         return when(role) {
 
             Role.CLIENT -> {
-                RetrofitInstance.api.registerClient(request)
+                RetrofitInstance.api.register(request)
             }
 
             Role.BUSINESS -> {
-                RetrofitInstance.api.registerClient(request)
+                RetrofitInstance.api.register(request)
             }
         }
     }
