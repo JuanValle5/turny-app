@@ -28,7 +28,9 @@ import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.ProfileInfoRow
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onLogout: () -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -164,7 +166,9 @@ fun ProfileScreen() {
 
                 // LOGOUT BUTTON
                 Button(
-                    onClick = {},
+                    onClick = {
+                        onLogout()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(54.dp)

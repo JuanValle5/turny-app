@@ -57,7 +57,9 @@ data class Negocio(
 )
 
 @Composable
-fun HomeClientScreen() {
+fun HomeClientScreen(
+    onNavigateToProfile: () -> Unit
+) {
 
     val negocios = listOf(
         Negocio(
@@ -78,7 +80,11 @@ fun HomeClientScreen() {
 
     Scaffold(
         bottomBar = {
-            BottomNavigationCliente()
+            BottomNavigationCliente(
+                onProfileClick = {
+                    onNavigateToProfile()
+                }
+            )
         }
     ) { paddingValues ->
 
@@ -418,7 +424,9 @@ fun BusinessCard(
 }
 
 @Composable
-fun BottomNavigationCliente() {
+fun BottomNavigationCliente(
+    onProfileClick: () -> Unit
+) {
 
     NavigationBar(
         containerColor = Color.White
@@ -468,7 +476,10 @@ fun BottomNavigationCliente() {
 
         NavigationBarItem(
             selected = false,
-            onClick = {},
+
+            onClick = {
+                onProfileClick()
+            },
             icon = {
                 Icon(
                     imageVector = Icons.Outlined.PersonOutline,
