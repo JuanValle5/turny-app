@@ -1,7 +1,10 @@
 package com.app.turny.ui.auth.login
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.turny.data.local.SessionManager
 import com.app.turny.data.repository.AuthRepositoryImpl
 import com.app.turny.domain.model.Role
 import com.app.turny.domain.repository.AuthRepository
@@ -9,9 +12,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    application: Application
+) : AndroidViewModel(application) {
     private val repository: AuthRepository = AuthRepositoryImpl()
 
+    private val sessionManager =
+        SessionManager(application)
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
 
@@ -45,6 +52,11 @@ class LoginViewModel : ViewModel() {
                     password = _uiState.value.password,
 
                     role = _uiState.value.selectedRole
+                )
+
+                sessionManager.saveSession(
+                    token = response.token,
+                    userType = response.tipo
                 )
 
                 _uiState.value = _uiState.value.copy(
