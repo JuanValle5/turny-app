@@ -21,12 +21,16 @@ class SessionManager(
 
         private val USER_TYPE_KEY =
             stringPreferencesKey("user_type")
+
+        private val USER_NAME_KEY =
+            stringPreferencesKey("user_name")
     }
 
     // GUARDAR SESIÓN
     suspend fun saveSession(
         token: String,
-        userType: String
+        userType: String,
+        userName: String
     ) {
 
         context.dataStore.edit { preferences ->
@@ -34,6 +38,8 @@ class SessionManager(
             preferences[TOKEN_KEY] = token
 
             preferences[USER_TYPE_KEY] = userType
+
+            preferences[USER_NAME_KEY] = userName
         }
     }
 
@@ -53,6 +59,15 @@ class SessionManager(
             context.dataStore.data.first()
 
         return preferences[USER_TYPE_KEY]
+    }
+
+    // OBTENER NOMBRE
+    suspend fun getUserName(): String? {
+
+        val preferences =
+            context.dataStore.data.first()
+
+        return preferences[USER_NAME_KEY]
     }
 
     // CERRAR SESIÓN

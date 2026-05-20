@@ -56,7 +56,8 @@ class LoginViewModel(
 
                 sessionManager.saveSession(
                     token = response.token,
-                    userType = response.tipo
+                    userType = response.tipo,
+                    userName = response.nombre
                 )
 
                 _uiState.value = _uiState.value.copy(
