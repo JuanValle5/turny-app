@@ -74,80 +74,102 @@ fun HomeClientScreen(
         )
     )
 
-    Scaffold(
-        bottomBar = {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF6F7FB))
+    ) {
 
-            CustomerBottomNavBar(
-
-                selectedItem = CustomerNavItem.EXPLORE,
-
-                onItemSelected = { item ->
-
-                    when(item){
-
-                        CustomerNavItem.PROFILE -> {
-                            onNavigateToProfile()
-                        }
-
-                        else -> {}
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-
-        LazyColumn(
+        // CONTENT
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color(0xFFF5F5F5))
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .weight(1f)
         ) {
 
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
 
-            item {
-                AppHeader(
-                    userName = "Andy Rubin",
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-            item {
-                HorizontalDivider(color = Color(0xFFE5E5E5))
-            }
+                item {
 
-            item {
-                ExploreSection()
-            }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
 
-            item {
-                SearchSection()
-            }
+                item {
 
-            item {
-                CategoriesSection()
-            }
+                    AppHeader(
+                        userName = "Andy Rubin",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 6.dp)
+                    )
+                }
 
-            item {
-                Text(
-                    text = "4 negocios encontrados",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
-            }
+                item {
 
-            items(negocios) { negocio ->
-                BusinessCard(negocio)
-            }
+                    HorizontalDivider(
+                        color = Color(0xFFE5E5E5)
+                    )
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
+                item {
+
+                    ExploreSection()
+                }
+
+                item {
+
+                    SearchSection()
+                }
+
+                item {
+
+                    CategoriesSection()
+                }
+
+                item {
+
+                    Text(
+                        text = "4 negocios encontrados",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+
+                items(negocios) { negocio ->
+
+                    BusinessCard(negocio)
+                }
+
+                item {
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
+
+        // FOOTER
+        CustomerBottomNavBar(
+
+            selectedItem = CustomerNavItem.EXPLORE,
+
+            onItemSelected = { item ->
+
+                when(item){
+
+                    CustomerNavItem.PROFILE -> {
+
+                        onNavigateToProfile()
+                    }
+
+                    else -> {}
+                }
+            }
+        )
     }
 }
 
