@@ -36,6 +36,8 @@ fun ProfileScreen(
 
     onLogout: () -> Unit,
 
+    onNavigateToHome: () -> Unit,
+
     viewModel: ProfileViewModel = viewModel()
 ) {
 
@@ -173,7 +175,17 @@ fun ProfileScreen(
         // BOTTOM NAVIGATION
         CustomerBottomNavBar(
             selectedItem = CustomerNavItem.PROFILE,
-            onItemSelected = {}
+            onItemSelected = { item ->
+
+                when(item){
+
+                    CustomerNavItem.EXPLORE -> {
+                        onNavigateToHome()
+                    }
+
+                    else -> {}
+                }
+            }
         )
     }
 }

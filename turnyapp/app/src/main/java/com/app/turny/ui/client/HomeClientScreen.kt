@@ -152,54 +152,6 @@ fun HomeClientScreen(
 }
 
 @Composable
-fun HeaderSection() {
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .size(42.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFD9F0FF)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "🗓")
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(
-                text = "Turny",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .size(42.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFE3EDFF)),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "AR",
-                color = Color(0xFF3B82F6),
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
-}
-
-@Composable
 fun ExploreSection() {
 
     Row(
