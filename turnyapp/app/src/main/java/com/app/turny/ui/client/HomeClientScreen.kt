@@ -19,11 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
@@ -32,14 +28,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +40,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.app.turny.ui.components.CustomerBottomNavBar
+import com.app.turny.ui.components.CustomerNavItem
+import com.app.turny.ui.components.structure.AppHeader
 
 data class Negocio(
     val nombre: String,
@@ -80,9 +76,21 @@ fun HomeClientScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavigationCliente(
-                onProfileClick = {
-                    onNavigateToProfile()
+
+            CustomerBottomNavBar(
+
+                selectedItem = CustomerNavItem.EXPLORE,
+
+                onItemSelected = { item ->
+
+                    when(item){
+
+                        CustomerNavItem.PROFILE -> {
+                            onNavigateToProfile()
+                        }
+
+                        else -> {}
+                    }
                 }
             )
         }
@@ -102,7 +110,10 @@ fun HomeClientScreen(
             }
 
             item {
-                HeaderSection()
+                AppHeader(
+                    userName = "Andy Rubin",
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             item {
@@ -420,75 +431,5 @@ fun BusinessCard(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationCliente(
-    onProfileClick: () -> Unit
-) {
-
-    NavigationBar(
-        containerColor = Color.White
-    ) {
-
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.Home,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Explorar")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.CalendarMonth,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Mis citas")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Favoritos")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-
-            onClick = {
-                onProfileClick()
-            },
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.PersonOutline,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Perfil")
-            }
-        )
     }
 }

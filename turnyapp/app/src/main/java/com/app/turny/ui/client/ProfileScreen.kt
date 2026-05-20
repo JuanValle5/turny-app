@@ -29,6 +29,7 @@ import com.app.turny.R
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.ProfileInfoRow
+import com.app.turny.ui.components.structure.AppHeader
 
 @Composable
 fun ProfileScreen(
@@ -53,58 +54,12 @@ fun ProfileScreen(
         ) {
 
             // HEADER
-            Row(
+            AppHeader(
+                userName = uiState.nombre,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 18.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = null,
-                        modifier = Modifier.size(34.dp),
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = "Turny",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .size(34.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFE7F0FF)),
-                    contentAlignment = Alignment.Center
-                ) {
-
-                    val initials = uiState.nombre
-                        .split(" ")
-                        .filter { it.isNotBlank() }
-                        .take(2)
-                        .joinToString("") {
-                            it.first().uppercase()
-                        }
-
-                    Text(
-                        text = initials,
-                        color = Color(0xFF4D8DFF),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp
-                    )
-                }
-            }
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
