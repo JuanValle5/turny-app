@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.app.turny.R
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
@@ -35,6 +37,8 @@ fun ProfileScreen(
 
     viewModel: ProfileViewModel = viewModel()
 ) {
+
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -85,8 +89,16 @@ fun ProfileScreen(
                     contentAlignment = Alignment.Center
                 ) {
 
+                    val initials = uiState.nombre
+                        .split(" ")
+                        .filter { it.isNotBlank() }
+                        .take(2)
+                        .joinToString("") {
+                            it.first().uppercase()
+                        }
+
                     Text(
-                        text = "AR",
+                        text = initials,
                         color = Color(0xFF4D8DFF),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 12.sp
@@ -131,7 +143,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(18.dp))
 
                 Text(
-                    text = "Andy Rubin",
+                    text = uiState.nombre,
                     fontWeight = FontWeight.Bold,
                     fontSize = 34.sp,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -149,21 +161,21 @@ fun ProfileScreen(
 
                 ProfileInfoRow(
                     label = "Nombre Completo",
-                    value = "Andy Rubin"
+                    value = uiState.nombre
                 )
 
                 Spacer(modifier = Modifier.height(18.dp))
 
                 ProfileInfoRow(
                     label = "Correo electrónico",
-                    value = "andy.rubin@gmail.com"
+                    value = uiState.email
                 )
 
                 Spacer(modifier = Modifier.height(18.dp))
 
                 ProfileInfoRow(
                     label = "Teléfono",
-                    value = "+57 357 942 6907"
+                    value = uiState.telefono
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
