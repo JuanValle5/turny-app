@@ -60,7 +60,11 @@ fun HomeClientScreen(
 
     onNavigateToProfile: () -> Unit,
 
-    viewModel: HomeClientViewModel = viewModel(),
+    onNavigateToAppointments: () -> Unit,
+
+    onNavigateToFavorites: () -> Unit,
+
+    viewModel: HomeClientViewModel = viewModel()
 
 ) {
 
@@ -152,6 +156,16 @@ fun HomeClientScreen(
             onItemSelected = { item ->
 
                 when(item){
+
+                    CustomerNavItem.APPOINTMENTS -> {
+
+                        onNavigateToAppointments()
+                    }
+
+                    CustomerNavItem.FAVORITES -> {
+
+                        onNavigateToFavorites()
+                    }
 
                     CustomerNavItem.PROFILE -> {
 

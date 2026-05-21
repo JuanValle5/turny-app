@@ -24,7 +24,14 @@ import com.app.turny.ui.components.CustomerNavItem
 
 
 @Composable
-fun AppointmentsScreen() {
+fun AppointmentsScreen(
+
+    onNavigateToHome: () -> Unit,
+
+    onNavigateToFavorites: () -> Unit,
+
+    onNavigateToProfile: () -> Unit
+) {
 
     Box(
         modifier = Modifier
@@ -185,7 +192,28 @@ fun AppointmentsScreen() {
 
             CustomerBottomNavBar(
                 selectedItem = CustomerNavItem.APPOINTMENTS,
-                onItemSelected = {}
+                onItemSelected = { item ->
+
+                    when(item){
+
+                        CustomerNavItem.EXPLORE -> {
+
+                            onNavigateToHome()
+                        }
+
+                        CustomerNavItem.FAVORITES -> {
+
+                            onNavigateToFavorites()
+                        }
+
+                        CustomerNavItem.PROFILE -> {
+
+                            onNavigateToProfile()
+                        }
+
+                        else -> {}
+                    }
+                }
             )
         }
     }

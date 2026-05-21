@@ -38,6 +38,10 @@ fun ProfileScreen(
 
     onNavigateToHome: () -> Unit,
 
+    onNavigateToAppointments: () -> Unit,
+
+    onNavigateToFavorites: () -> Unit,
+
     viewModel: ProfileViewModel = viewModel()
 ) {
 
@@ -180,7 +184,18 @@ fun ProfileScreen(
                 when(item){
 
                     CustomerNavItem.EXPLORE -> {
+
                         onNavigateToHome()
+                    }
+
+                    CustomerNavItem.APPOINTMENTS -> {
+
+                        onNavigateToAppointments()
+                    }
+
+                    CustomerNavItem.FAVORITES -> {
+
+                        onNavigateToFavorites()
                     }
 
                     else -> {}
