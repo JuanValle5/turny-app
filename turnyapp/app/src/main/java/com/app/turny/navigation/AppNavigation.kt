@@ -12,6 +12,8 @@ import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
 import com.app.turny.ui.client.ProfileScreen
+import com.app.turny.ui.client.AppointmentsScreen
+import com.app.turny.ui.client.favorites.FavoritesScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
@@ -89,6 +91,20 @@ fun AppNavigation() {
                     navController.navigate(
                         Screen.ProfileClient.route
                     )
+                },
+
+                onNavigateToAppointments = {
+
+                    navController.navigate(
+                        Screen.Appointments.route
+                    )
+                },
+
+                onNavigateToFavorites = {
+
+                    navController.navigate(
+                        Screen.Favorites.route
+                    )
                 }
             )
         }
@@ -113,6 +129,74 @@ fun AppNavigation() {
 
                     navController.navigate(
                         Screen.HomeClient.route
+                    )
+                },
+
+                onNavigateToAppointments = {
+
+                    navController.navigate(
+                        Screen.Appointments.route
+                    )
+                },
+
+                onNavigateToFavorites = {
+
+                    navController.navigate(
+                        Screen.Favorites.route
+                    )
+                }
+            )
+        }
+
+        composable(Screen.Appointments.route) {
+
+            AppointmentsScreen(
+
+                onNavigateToHome = {
+
+                    navController.navigate(
+                        Screen.HomeClient.route
+                    )
+                },
+
+                onNavigateToFavorites = {
+
+                    navController.navigate(
+                        Screen.Favorites.route
+                    )
+                },
+
+                onNavigateToProfile = {
+
+                    navController.navigate(
+                        Screen.ProfileClient.route
+                    )
+                }
+            )
+        }
+
+        composable(Screen.Favorites.route) {
+
+            FavoritesScreen(
+
+                onNavigateToHome = {
+
+                    navController.navigate(
+                        Screen.HomeClient.route
+                    )
+                },
+
+                onNavigateToAppointments = {
+
+                    navController.navigate(
+                        Screen.Appointments.route
+                    )
+                },
+
+                onNavigateToProfile = {
+
+                    navController.navigate(
+                        Screen.ProfileClient.route
                     )
                 }
             )

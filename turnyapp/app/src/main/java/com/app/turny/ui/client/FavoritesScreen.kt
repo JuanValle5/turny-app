@@ -22,7 +22,13 @@ import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.FavoriteBusinessCard
 
 @Composable
-fun FavoritesScreen() {
+fun FavoritesScreen(
+    onNavigateToHome: () -> Unit,
+
+    onNavigateToAppointments: () -> Unit,
+
+    onNavigateToProfile: () -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -125,7 +131,28 @@ fun FavoritesScreen() {
         // BOTTOM NAVIGATION
         CustomerBottomNavBar(
             selectedItem = CustomerNavItem.FAVORITES,
-            onItemSelected = {}
+            onItemSelected = { item ->
+
+                when(item){
+
+                    CustomerNavItem.EXPLORE -> {
+
+                        onNavigateToHome()
+                    }
+
+                    CustomerNavItem.APPOINTMENTS -> {
+
+                        onNavigateToAppointments()
+                    }
+
+                    CustomerNavItem.PROFILE -> {
+
+                        onNavigateToProfile()
+                    }
+
+                    else -> {}
+                }
+            }
         )
     }
 }
