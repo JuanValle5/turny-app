@@ -1,26 +1,27 @@
 package com.app.turny.ui.client
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.app.turny.R
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.lazy.items
 import com.app.turny.ui.components.AppointmentCard
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
+import com.app.turny.ui.components.structure.AppHeader
 
 
 @Composable
@@ -30,8 +31,12 @@ fun AppointmentsScreen(
 
     onNavigateToFavorites: () -> Unit,
 
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+
+    viewModel: AppointmentsViewModel = viewModel()
 ) {
+
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -58,42 +63,12 @@ fun AppointmentsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Image(
-                            painter = painterResource(id = R.drawable.logo),
-                            contentDescription = null,
-                            modifier = Modifier.size(34.dp),
-                            contentScale = ContentScale.Crop
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Text(
-                            text = "Turny",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
-                        )
-                    }
-
-                    Box(
+                    AppHeader(
+                        userName = uiState.userName,
                         modifier = Modifier
-                            .size(34.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFE7F0FF)),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        Text(
-                            text = "AR",
-                            color = Color(0xFF4D8DFF),
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp
-                        )
-                    }
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 18.dp)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -171,19 +146,38 @@ fun AppointmentsScreen(
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
 
-                        items(3) {
+                        items(uiState.appointments) {
 
                             AppointmentCard(
-                                serviceName = "Nombre del servicio",
-                                businessName = "Nombre del Negocio",
-                                date = "Fecha",
-                                hour = "Hora",
-                                price = "$18",
-                                status = if (it == 0) "Confirmada" else "Pendiente",
-                                statusColor = if (it == 0)
-                                    Color(0xFF4CAF50)
-                                else
-                                    Color(0xFFE0A800)
+
+                                serviceName =
+                                    it.servicioNombre,
+
+                                businessName =
+                                    it.negocioNombre,
+
+                                date =
+                                    it.fecha,
+
+                                hour =
+                                    it.hora,
+
+                                price =
+                                    "$${it.precio}",
+
+                                status = it.estado,
+
+                                statusColor = when(it.estado){
+
+                                    "CONFIRMADA" ->
+                                        Color(0xFF4CAF50)
+
+                                    "PENDIENTE" ->
+                                        Color(0xFFE0A800)
+
+                                    else ->
+                                        Color.Gray
+                                }
                             )
                         }
                     }

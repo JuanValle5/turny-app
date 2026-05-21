@@ -1,5 +1,6 @@
 package com.app.turny.data.remote
 
+import com.app.turny.data.remote.api.AppointmentApiService
 import com.app.turny.data.remote.api.AuthApiService
 import com.app.turny.data.remote.api.ProfileApiService
 import com.app.turny.data.remote.api.BusinessApiService
@@ -37,5 +38,12 @@ object RetrofitInstance {
     val businessApi: BusinessApiService by lazy {
 
         retrofit.create(BusinessApiService::class.java)
+    }
+
+    val appointmentApi: AppointmentApiService by lazy {
+
+        retrofit.create(
+            AppointmentApiService::class.java
+        )
     }
 }
