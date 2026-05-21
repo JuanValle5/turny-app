@@ -107,6 +107,13 @@ fun AppNavigation() {
 
                         popUpTo(0)
                     }
+                },
+
+                onNavigateToHome = {
+
+                    navController.navigate(
+                        Screen.HomeClient.route
+                    )
                 }
             )
         }

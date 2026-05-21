@@ -19,11 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
@@ -32,14 +28,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +39,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.app.turny.ui.components.business.BusinessCard
+import com.app.turny.ui.components.CustomerBottomNavBar
+import com.app.turny.ui.components.CustomerNavItem
+import com.app.turny.ui.components.structure.AppHeader
 
 data class Negocio(
     val nombre: String,
@@ -58,133 +57,111 @@ data class Negocio(
 
 @Composable
 fun HomeClientScreen(
-    onNavigateToProfile: () -> Unit
+
+    onNavigateToProfile: () -> Unit,
+
+    viewModel: HomeClientViewModel = viewModel(),
+
 ) {
 
-    val negocios = listOf(
-        Negocio(
-            nombre = "Nombre de negocio",
-            tipo = "Tipo de negocio",
-            direccion = "Dirección",
-            horario = "Horario",
-            rating = "5.0"
-        ),
-        Negocio(
-            nombre = "Nombre de negocio",
-            tipo = "Tipo de negocio",
-            direccion = "Dirección",
-            horario = "Horario",
-            rating = "5.0"
-        )
-    )
+    val uiState by viewModel.uiState.collectAsState()
 
-    Scaffold(
-        bottomBar = {
-            BottomNavigationCliente(
-                onProfileClick = {
-                    onNavigateToProfile()
-                }
-            )
-        }
-    ) { paddingValues ->
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color(0xFFF5F5F5))
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
-            }
-
-            item {
-                HeaderSection()
-            }
-
-            item {
-                HorizontalDivider(color = Color(0xFFE5E5E5))
-            }
-
-            item {
-                ExploreSection()
-            }
-
-            item {
-                SearchSection()
-            }
-
-            item {
-                CategoriesSection()
-            }
-
-            item {
-                Text(
-                    text = "4 negocios encontrados",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
-            }
-
-            items(negocios) { negocio ->
-                BusinessCard(negocio)
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun HeaderSection() {
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF6F7FB))
     ) {
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .size(42.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFD9F0FF)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "🗓")
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(
-                text = "Turny",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Box(
+        // CONTENT
+        Column(
             modifier = Modifier
-                .size(42.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFE3EDFF)),
-            contentAlignment = Alignment.Center
+                .weight(1f)
         ) {
-            Text(
-                text = "AR",
-                color = Color(0xFF3B82F6),
-                fontWeight = FontWeight.Bold
-            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                item {
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                item {
+
+                    AppHeader(
+                        userName = uiState.userName,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 6.dp)
+                    )
+                }
+
+                item {
+
+                    HorizontalDivider(
+                        color = Color(0xFFE5E5E5)
+                    )
+                }
+
+                item {
+
+                    ExploreSection()
+                }
+
+                item {
+
+                    SearchSection()
+                }
+
+                item {
+
+                    CategoriesSection()
+                }
+
+                item {
+
+                    Text(
+                        text = "${uiState.businesses.size} negocios encontrados",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+
+                items(uiState.businesses) { negocio ->
+
+                    BusinessCard(negocio)
+                }
+
+                item {
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
         }
+
+        // FOOTER
+        CustomerBottomNavBar(
+
+            selectedItem = CustomerNavItem.EXPLORE,
+
+            onItemSelected = { item ->
+
+                when(item){
+
+                    CustomerNavItem.PROFILE -> {
+
+                        onNavigateToProfile()
+                    }
+
+                    else -> {}
+                }
+            }
+        )
     }
 }
 
@@ -299,196 +276,6 @@ fun CategoryChip(
         Text(
             text = text,
             color = if (selected) Color.White else Color.DarkGray
-        )
-    }
-}
-
-@Composable
-fun BusinessCard(
-    negocio: Negocio
-) {
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(Color(0xFFE5E5E5)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "🖼")
-            }
-
-            Spacer(modifier = Modifier.width(14.dp))
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    Text(
-                        text = negocio.nombre,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Icon(
-                            imageVector = Icons.Outlined.Star,
-                            contentDescription = null,
-                            tint = Color(0xFFF59E0B),
-                            modifier = Modifier.size(18.dp)
-                        )
-
-                        Text(
-                            text = negocio.rating
-                        )
-
-                        Text(
-                            text = " (156)",
-                            color = Color.Gray
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = negocio.tipo,
-                    color = Color.Gray
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.LocationOn,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier.size(16.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(4.dp))
-
-                    Text(
-                        text = negocio.direccion,
-                        color = Color.Gray
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.Schedule,
-                        contentDescription = null,
-                        tint = Color.Gray,
-                        modifier = Modifier.size(16.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(4.dp))
-
-                    Text(
-                        text = negocio.horario,
-                        color = Color.Gray
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun BottomNavigationCliente(
-    onProfileClick: () -> Unit
-) {
-
-    NavigationBar(
-        containerColor = Color.White
-    ) {
-
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.Home,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Explorar")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.CalendarMonth,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Mis citas")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Favoritos")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-
-            onClick = {
-                onProfileClick()
-            },
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.PersonOutline,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text("Perfil")
-            }
         )
     }
 }
