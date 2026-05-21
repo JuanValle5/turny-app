@@ -11,5 +11,9 @@ data class AppointmentsUiState(
 
     val userName: String = "",
 
+    val selectedTab:
+    AppointmentsTab =
+        AppointmentsTab.UPCOMING,
+
     val error: String? = null
 )

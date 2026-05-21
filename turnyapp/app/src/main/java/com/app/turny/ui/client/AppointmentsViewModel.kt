@@ -30,6 +30,16 @@ class AppointmentsViewModel(
         loadAppointments()
     }
 
+    fun onTabSelected(
+        tab: AppointmentsTab
+    ) {
+
+        _uiState.value =
+            _uiState.value.copy(
+                selectedTab = tab
+            )
+    }
+
     private fun loadAppointments() {
 
         viewModelScope.launch {

@@ -18,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.items
+import java.time.LocalDate
 import com.app.turny.ui.components.AppointmentCard
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.structure.AppHeader
+import com.app.turny.ui.components.tabs.AppointmentTab
 
 
 @Composable
@@ -37,6 +39,28 @@ fun AppointmentsScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+
+    val today = LocalDate.now()
+
+    val filteredAppointments =
+        when(uiState.selectedTab){
+
+            AppointmentsTab.UPCOMING -> {
+
+                uiState.appointments.filter {
+
+                    LocalDate.parse(it.fecha) >= today
+                }
+            }
+
+            AppointmentsTab.HISTORY -> {
+
+                uiState.appointments.filter {
+
+                    LocalDate.parse(it.fecha) < today
+                }
+            }
+        }
 
     Box(
         modifier = Modifier
@@ -103,39 +127,41 @@ fun AppointmentsScreen(
                             .padding(4.dp)
                     ) {
 
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color.White)
-                                .border(
-                                    width = 1.dp,
-                                    color = Color(0xFF4D8DFF),
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .padding(vertical = 10.dp),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            horizontalArrangement =
+                                Arrangement.spacedBy(12.dp)
                         ) {
 
-                            Text(
-                                text = "» Próximas",
-                                color = Color(0xFF4D8DFF),
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 13.sp
+                            AppointmentTab(
+
+                                text = "Próximas",
+
+                                selected =
+                                    uiState.selectedTab ==
+                                            AppointmentsTab.UPCOMING,
+
+                                onClick = {
+
+                                    viewModel.onTabSelected(
+                                        AppointmentsTab.UPCOMING
+                                    )
+                                }
                             )
-                        }
 
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = 10.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
+                            AppointmentTab(
 
-                            Text(
                                 text = "Historial",
-                                color = Color.Gray,
-                                fontSize = 13.sp
+
+                                selected =
+                                    uiState.selectedTab ==
+                                            AppointmentsTab.HISTORY,
+
+                                onClick = {
+
+                                    viewModel.onTabSelected(
+                                        AppointmentsTab.HISTORY
+                                    )
+                                }
                             )
                         }
                     }
@@ -146,7 +172,7 @@ fun AppointmentsScreen(
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
 
-                        items(uiState.appointments) {
+                        items(filteredAppointments) {
 
                             AppointmentCard(
 
