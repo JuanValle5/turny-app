@@ -1,4 +1,4 @@
-package com.app.turny.ui.client
+package com.app.turny.ui.client.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -10,10 +10,10 @@ import androidx.navigation.compose.composable
 import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.HomeBusinessScreen
-import com.app.turny.ui.client.HomeClientScreen
-import com.app.turny.ui.client.ProfileScreen
-import com.app.turny.ui.client.AppointmentsScreen
-import com.app.turny.ui.client.FavoritesScreen
+import com.app.turny.ui.client.home.HomeClientScreen
+import com.app.turny.ui.client.profile.ProfileScreen
+import com.app.turny.ui.client.appointment.AppointmentsScreen
+import com.app.turny.ui.client.favorite.FavoritesScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable

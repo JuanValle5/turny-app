@@ -1,4 +1,4 @@
-package com.app.turny.ui.client
+package com.app.turny.ui.client.home
 
 import com.app.turny.data.remote.dto.business.BusinessCardResponse
 
