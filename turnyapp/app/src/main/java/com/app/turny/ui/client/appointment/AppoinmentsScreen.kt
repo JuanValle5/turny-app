@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+//import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -61,179 +61,350 @@ fun AppointmentsScreen(
             }
         }
 
-    Box(
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF6F7FB))
     ) {
 
+        // CONTENT
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
         ) {
+            // HEADER
 
-            // CONTENIDO
+            AppHeader(
+                userName = uiState.userName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .padding(horizontal = 20.dp)
+                    .fillMaxSize()
             ) {
+                Text(
+                    text = "Mis citas",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp
+                )
 
-                // HEADER
+                Spacer(modifier = Modifier.height(20.dp)) // PENDIENTE 4.dp
+
+                Text(
+                    text = "Citas próximas",
+                    color = Color.Gray,
+                    fontSize = 13.sp
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                // TABS
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 18.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AppHeader(
-                        userName = uiState.userName,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 18.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(Color(0xFFE9EDF3))
+                        .padding(4.dp)
                 ) {
 
-                    Text(
-                        text = "Mis citas",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 26.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "Citas próximas",
-                        color = Color.Gray,
-                        fontSize = 13.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(18.dp))
-
-                    // TABS
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(14.dp))
-                            .background(Color(0xFFE9EDF3))
-                            .padding(4.dp)
+                        horizontalArrangement =
+                            Arrangement.spacedBy(12.dp)
                     ) {
 
-                        Row(
-                            horizontalArrangement =
-                                Arrangement.spacedBy(12.dp)
-                        ) {
+                        AppointmentTab(
 
-                            AppointmentTab(
+                            text = "Próximas",
 
-                                text = "Próximas",
+                            selected =
+                                uiState.selectedTab ==
+                                        AppointmentsTab.UPCOMING,
 
-                                selected =
-                                    uiState.selectedTab ==
-                                            AppointmentsTab.UPCOMING,
+                            onClick = {
 
-                                onClick = {
+                                viewModel.onTabSelected(
+                                    AppointmentsTab.UPCOMING
+                                )
+                            }
+                        )
 
-                                    viewModel.onTabSelected(
-                                        AppointmentsTab.UPCOMING
-                                    )
-                                }
-                            )
+                        AppointmentTab(
 
-                            AppointmentTab(
+                            text = "Historial",
 
-                                text = "Historial",
+                            selected =
+                                uiState.selectedTab ==
+                                        AppointmentsTab.HISTORY,
 
-                                selected =
-                                    uiState.selectedTab ==
-                                            AppointmentsTab.HISTORY,
+                            onClick = {
 
-                                onClick = {
-
-                                    viewModel.onTabSelected(
-                                        AppointmentsTab.HISTORY
-                                    )
-                                }
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(14.dp)
-                    ) {
-
-                        items(filteredAppointments) {
-
-                            AppointmentCard(
-
-                                serviceName =
-                                    it.servicioNombre,
-
-                                businessName =
-                                    it.negocioNombre,
-
-                                date =
-                                    it.fecha,
-
-                                hour =
-                                    it.hora,
-
-                                price =
-                                    "$${it.precio}",
-
-                                status = it.estado,
-
-                                statusColor = when(it.estado){
-
-                                    "CONFIRMADA" ->
-                                        Color(0xFF4CAF50)
-
-                                    "PENDIENTE" ->
-                                        Color(0xFFE0A800)
-
-                                    else ->
-                                        Color.Gray
-                                }
-                            )
-                        }
+                                viewModel.onTabSelected(
+                                    AppointmentsTab.HISTORY
+                                )
+                            }
+                        )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+
+                    items(filteredAppointments) {
+
+                        AppointmentCard(
+
+                            serviceName =
+                                it.servicioNombre,
+
+                            businessName =
+                                it.negocioNombre,
+
+                            date =
+                                it.fecha,
+
+                            hour =
+                                it.hora,
+
+                            price =
+                                "$${it.precio}",
+
+                            status = it.estado,
+
+                            statusColor = when(it.estado){
+
+                                "CONFIRMADA" ->
+                                    Color(0xFF4CAF50)
+
+                                "PENDIENTE" ->
+                                    Color(0xFFE0A800)
+
+                                else ->
+                                    Color.Gray
+                            }
+                        )
+                    }
+                }
+
+
+
             }
 
-            CustomerBottomNavBar(
-                selectedItem = CustomerNavItem.APPOINTMENTS,
-                onItemSelected = { item ->
 
-                    when(item){
 
-                        CustomerNavItem.EXPLORE -> {
-
-                            onNavigateToHome()
-                        }
-
-                        CustomerNavItem.FAVORITES -> {
-
-                            onNavigateToFavorites()
-                        }
-
-                        CustomerNavItem.PROFILE -> {
-
-                            onNavigateToProfile()
-                        }
-
-                        else -> {}
-                    }
-                }
-            )
         }
+
+        CustomerBottomNavBar(
+            selectedItem = CustomerNavItem.APPOINTMENTS,
+            onItemSelected = { item ->
+
+                when(item){
+
+                    CustomerNavItem.EXPLORE -> {
+
+                        onNavigateToHome()
+                    }
+
+                    CustomerNavItem.FAVORITES -> {
+
+                        onNavigateToFavorites()
+                    }
+
+                    CustomerNavItem.PROFILE -> {
+
+                        onNavigateToProfile()
+                    }
+
+                    else -> {}
+                }
+            }
+        )
+
     }
+
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(Color(0xFFF6F7FB))
+//    ) {
+//
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//        ) {
+//
+//            // CONTENIDO
+//            Column(
+//                modifier = Modifier
+//                    .weight(1f)
+//            ) {
+//
+//                // HEADER
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(horizontal = 20.dp, vertical = 18.dp),
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    AppHeader(
+//                        userName = uiState.userName,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(horizontal = 20.dp, vertical = 18.dp)
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//
+//                Column(
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp)
+//                ) {
+//
+//                    Text(
+//                        text = "Mis citas",
+//                        fontWeight = FontWeight.Bold,
+//                        fontSize = 26.sp
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(4.dp))
+//
+//                    Text(
+//                        text = "Citas próximas",
+//                        color = Color.Gray,
+//                        fontSize = 13.sp
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(18.dp))
+//
+//                    // TABS
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .clip(RoundedCornerShape(14.dp))
+//                            .background(Color(0xFFE9EDF3))
+//                            .padding(4.dp)
+//                    ) {
+//
+//                        Row(
+//                            horizontalArrangement =
+//                                Arrangement.spacedBy(12.dp)
+//                        ) {
+//
+//                            AppointmentTab(
+//
+//                                text = "Próximas",
+//
+//                                selected =
+//                                    uiState.selectedTab ==
+//                                            AppointmentsTab.UPCOMING,
+//
+//                                onClick = {
+//
+//                                    viewModel.onTabSelected(
+//                                        AppointmentsTab.UPCOMING
+//                                    )
+//                                }
+//                            )
+//
+//                            AppointmentTab(
+//
+//                                text = "Historial",
+//
+//                                selected =
+//                                    uiState.selectedTab ==
+//                                            AppointmentsTab.HISTORY,
+//
+//                                onClick = {
+//
+//                                    viewModel.onTabSelected(
+//                                        AppointmentsTab.HISTORY
+//                                    )
+//                                }
+//                            )
+//                        }
+//                    }
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+//
+//                    LazyColumn(
+//                        verticalArrangement = Arrangement.spacedBy(14.dp)
+//                    ) {
+//
+//                        items(filteredAppointments) {
+//
+//                            AppointmentCard(
+//
+//                                serviceName =
+//                                    it.servicioNombre,
+//
+//                                businessName =
+//                                    it.negocioNombre,
+//
+//                                date =
+//                                    it.fecha,
+//
+//                                hour =
+//                                    it.hora,
+//
+//                                price =
+//                                    "$${it.precio}",
+//
+//                                status = it.estado,
+//
+//                                statusColor = when(it.estado){
+//
+//                                    "CONFIRMADA" ->
+//                                        Color(0xFF4CAF50)
+//
+//                                    "PENDIENTE" ->
+//                                        Color(0xFFE0A800)
+//
+//                                    else ->
+//                                        Color.Gray
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            CustomerBottomNavBar(
+//                selectedItem = CustomerNavItem.APPOINTMENTS,
+//                onItemSelected = { item ->
+//
+//                    when(item){
+//
+//                        CustomerNavItem.EXPLORE -> {
+//
+//                            onNavigateToHome()
+//                        }
+//
+//                        CustomerNavItem.FAVORITES -> {
+//
+//                            onNavigateToFavorites()
+//                        }
+//
+//                        CustomerNavItem.PROFILE -> {
+//
+//                            onNavigateToProfile()
+//                        }
+//
+//                        else -> {}
+//                    }
+//                }
+//            )
+//        }
+//    }
 }

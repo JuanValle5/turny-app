@@ -39,14 +39,6 @@ import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.structure.AppHeader
 
-data class Negocio(
-    val nombre: String,
-    val tipo: String,
-    val direccion: String,
-    val horario: String,
-    val rating: String
-)
-
 @Composable
 fun HomeClientScreen(
 
@@ -74,6 +66,14 @@ fun HomeClientScreen(
                 .weight(1f)
         ) {
 
+
+            AppHeader(
+                userName = uiState.userName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -85,16 +85,6 @@ fun HomeClientScreen(
                 item {
 
                     Spacer(modifier = Modifier.height(12.dp))
-                }
-
-                item {
-
-                    AppHeader(
-                        userName = uiState.userName,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 6.dp)
-                    )
                 }
 
                 item {
