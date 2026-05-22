@@ -4,6 +4,7 @@ import com.app.turny.data.remote.api.AppointmentApiService
 import com.app.turny.data.remote.api.AuthApiService
 import com.app.turny.data.remote.api.ProfileApiService
 import com.app.turny.data.remote.api.BusinessApiService
+import com.app.turny.data.remote.api.FavoriteApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -46,4 +47,11 @@ object RetrofitInstance {
             AppointmentApiService::class.java
         )
     }
+    val favoriteApi: FavoriteApiService by lazy {
+
+        retrofit.create(
+            FavoriteApiService::class.java
+        )
+    }
+
 }

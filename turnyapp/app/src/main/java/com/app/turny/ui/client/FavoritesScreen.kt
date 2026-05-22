@@ -1,9 +1,10 @@
-package com.app.turny.ui.client.favorites
+package com.app.turny.ui.client
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.app.turny.ui.components.structure.AppHeader
 import com.app.turny.R
 import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
@@ -27,8 +33,12 @@ fun FavoritesScreen(
 
     onNavigateToAppointments: () -> Unit,
 
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+
+    viewModel: FavoritesViewModel = viewModel()
 ) {
+
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -42,51 +52,12 @@ fun FavoritesScreen(
                 .weight(1f)
         ) {
 
-            // HEADER
-            Row(
+            AppHeader(
+                userName = uiState.userName,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 18.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = null,
-                        modifier = Modifier.size(34.dp),
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = "Turny",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .size(34.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFE7F0FF)),
-                    contentAlignment = Alignment.Center
-                ) {
-
-                    Text(
-                        text = "AR",
-                        color = Color(0xFF4D8DFF),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp
-                    )
-                }
-            }
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -104,7 +75,7 @@ fun FavoritesScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "1 negocio guardado",
+                    text = "${uiState.favorites.size} negocios guardados",
                     color = Color.Gray,
                     fontSize = 13.sp
                 )
@@ -115,13 +86,21 @@ fun FavoritesScreen(
                     verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
 
-                    items(1) {
+                    items(uiState.favorites) {
 
                         FavoriteBusinessCard(
-                            businessName = "Nombre del Negocio",
-                            businessType = "Tipo de negocio",
-                            rating = "5.0",
-                            schedule = "Horario de atención"
+
+                            businessName =
+                                it.negocioNombre,
+
+                            businessType =
+                                it.negocioCategoria,
+
+                            rating =
+                                it.rating.toString(),
+
+                            schedule =
+                                "Favorito guardado"
                         )
                     }
                 }

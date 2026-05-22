@@ -13,7 +13,7 @@ import com.app.turny.ui.business.HomeBusinessScreen
 import com.app.turny.ui.client.HomeClientScreen
 import com.app.turny.ui.client.ProfileScreen
 import com.app.turny.ui.client.AppointmentsScreen
-import com.app.turny.ui.client.favorites.FavoritesScreen
+import com.app.turny.ui.client.FavoritesScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
