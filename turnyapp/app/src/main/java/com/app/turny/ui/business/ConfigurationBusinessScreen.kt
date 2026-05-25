@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.ui.components.BottomNavItem
 import com.app.turny.ui.components.BottomNavigationBar
 import com.app.turny.ui.theme.BorderGray
@@ -38,7 +39,13 @@ import com.app.turny.ui.theme.RedHard
 import com.app.turny.ui.theme.White
 
 @Composable
-fun ConfigurationBusinessScreen() {
+fun ConfigurationBusinessScreen(
+
+    onLogout: () -> Unit,
+
+    viewModel: ConfigurationBusinessViewModel =
+        viewModel()
+) {
 
     Scaffold(
         containerColor = GrayBg,
@@ -213,7 +220,13 @@ fun ConfigurationBusinessScreen() {
 
                     // LOGOUT BUTTON
                     OutlinedButton(
-                        onClick = {},
+                        onClick = {
+
+                            viewModel.logout {
+
+                                onLogout()
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),

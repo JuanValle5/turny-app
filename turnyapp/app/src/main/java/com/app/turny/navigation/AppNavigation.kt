@@ -241,7 +241,18 @@ fun AppNavigation() {
             Screen.ConfigurationBusiness.route
         ) {
 
-            ConfigurationBusinessScreen()
+            ConfigurationBusinessScreen(
+
+                onLogout = {
+
+                    navController.navigate(
+                        Screen.Login.route
+                    ) {
+
+                        popUpTo(0)
+                    }
+                }
+            )
         }
     }
 }
