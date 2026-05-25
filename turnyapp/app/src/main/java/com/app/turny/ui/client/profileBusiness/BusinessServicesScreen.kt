@@ -33,7 +33,9 @@ data class ServiceItem(
 )
 
 @Composable
-fun BusinessServicesScreen() {
+fun BusinessServicesScreen(
+    businessId: String
+) {
 
     val services = listOf(
         ServiceItem(

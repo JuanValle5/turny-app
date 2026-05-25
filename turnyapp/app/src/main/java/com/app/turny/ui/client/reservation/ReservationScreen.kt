@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.app.turny.ui.components.*
 import com.app.turny.ui.components.boton.ConfirmReservationButton
 import com.app.turny.ui.components.boton.DateButton
 import com.app.turny.ui.components.boton.HourButton

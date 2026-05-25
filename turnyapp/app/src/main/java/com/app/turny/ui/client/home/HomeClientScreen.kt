@@ -48,6 +48,8 @@ fun HomeClientScreen(
 
     onNavigateToFavorites: () -> Unit,
 
+    onNavigateToBusiness: (String) -> Unit,
+
     viewModel: HomeClientViewModel = viewModel()
 
 ) {
@@ -120,7 +122,15 @@ fun HomeClientScreen(
 
                 items(uiState.businesses) { negocio ->
 
-                    BusinessCard(negocio)
+                    BusinessCard(
+                        negocio = negocio,
+                        onClick = {
+
+                            onNavigateToBusiness(
+                                negocio.negocioId
+                            )
+                        }
+                    )
                 }
 
                 item {

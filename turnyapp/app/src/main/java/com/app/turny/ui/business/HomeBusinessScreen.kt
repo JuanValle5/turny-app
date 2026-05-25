@@ -43,18 +43,28 @@ import com.app.turny.ui.theme.PrimaryBlueHard
 import com.app.turny.ui.theme.White
 
 @Composable
-fun HomeBusinessScreen() {
+fun HomeBusinessScreen(
+    onNavigateToConfiguration: () -> Unit
+) {
 
     Scaffold(
         containerColor = GrayBg,
 
         bottomBar = {
             BottomNavigationBar(
+
                 selectedItem = BottomNavItem.HOME,
+
                 onHomeClick = {},
+
                 onAgendaClick = {},
+
                 onServicesClick = {},
-                onProfileClick = {}
+
+                onProfileClick = {
+
+                    onNavigateToConfiguration()
+                }
             )
         },
 
