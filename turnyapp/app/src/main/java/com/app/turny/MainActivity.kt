@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.app.turny.navigation.AppNavigation
+import com.app.turny.ui.business.HomeBusinessScreen2
 import com.app.turny.ui.client.reservation.ReservationScreen
 
 import com.app.turny.ui.theme.TurnyappTheme
@@ -16,8 +17,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             TurnyappTheme {
 
-                AppNavigation()
-                //ReservationScreen()
+                //AppNavigation()
+                HomeBusinessScreen2()
+            //ReservationScreen()
                 //BusinessServicesScreen()
                 //ReservationsBusinessScreen()
                 //ServicesBusinessScreen()
