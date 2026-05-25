@@ -15,4 +15,15 @@ sealed class Screen(val route: String) {
     data object Appointments : Screen("appointments")
 
     data object Favorites : Screen("favorites")
+
+    data object BusinessServices :
+        Screen("business_services/{businessId}") {
+
+        fun createRoute(
+            businessId: String
+        ) = "business_services/$businessId"
+    }
+
+    data object ConfigurationBusiness :
+        Screen("configuration_business")
 }

@@ -1,6 +1,7 @@
 package com.app.turny.ui.components.business
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,11 +22,18 @@ import com.app.turny.data.remote.dto.business.BusinessCardResponse
 
 @Composable
 fun BusinessCard(
-    negocio: BusinessCardResponse
+
+    negocio: BusinessCardResponse,
+
+    onClick: () -> Unit
 ) {
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            },
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White

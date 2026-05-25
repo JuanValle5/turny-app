@@ -9,11 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
+import com.app.turny.ui.business.ConfigurationBusinessScreen
 import com.app.turny.ui.business.HomeBusinessScreen
-import com.app.turny.ui.client.HomeClientScreen
-import com.app.turny.ui.client.ProfileScreen
-import com.app.turny.ui.client.AppointmentsScreen
-import com.app.turny.ui.client.FavoritesScreen
+import com.app.turny.ui.client.home.HomeClientScreen
+import com.app.turny.ui.client.profile.ProfileScreen
+import com.app.turny.ui.client.appointment.AppointmentsScreen
+import com.app.turny.ui.client.favorite.FavoritesScreen
+import com.app.turny.ui.client.profileBusiness.BusinessServicesScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
@@ -105,14 +107,32 @@ fun AppNavigation() {
                     navController.navigate(
                         Screen.Favorites.route
                     )
+                },
+                onNavigateToBusiness = { businessId ->
+
+                    navController.navigate(
+
+                        Screen.BusinessServices
+                            .createRoute(businessId)
+                    )
                 }
             )
         }
 
         composable(Screen.HomeBusiness.route) {
 
-            HomeBusinessScreen()
+            HomeBusinessScreen(
+
+                onNavigateToConfiguration = {
+
+                    navController.navigate(
+                        Screen.ConfigurationBusiness.route
+                    )
+                }
+            )
         }
+
+
         composable(Screen.ProfileClient.route) {
 
             ProfileScreen(
@@ -198,6 +218,39 @@ fun AppNavigation() {
                     navController.navigate(
                         Screen.ProfileClient.route
                     )
+                }
+            )
+        }
+
+        composable(
+            route =
+                Screen.BusinessServices.route
+        ) { backStackEntry ->
+
+            val businessId =
+                backStackEntry.arguments
+                    ?.getString("businessId")
+                    ?: ""
+
+            BusinessServicesScreen(
+                businessId = businessId
+            )
+        }
+
+        composable(
+            Screen.ConfigurationBusiness.route
+        ) {
+
+            ConfigurationBusinessScreen(
+
+                onLogout = {
+
+                    navController.navigate(
+                        Screen.Login.route
+                    ) {
+
+                        popUpTo(0)
+                    }
                 }
             )
         }

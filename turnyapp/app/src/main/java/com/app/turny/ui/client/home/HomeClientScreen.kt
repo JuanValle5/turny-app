@@ -1,4 +1,4 @@
-package com.app.turny.ui.client
+package com.app.turny.ui.client.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,19 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,14 +39,6 @@ import com.app.turny.ui.components.CustomerBottomNavBar
 import com.app.turny.ui.components.CustomerNavItem
 import com.app.turny.ui.components.structure.AppHeader
 
-data class Negocio(
-    val nombre: String,
-    val tipo: String,
-    val direccion: String,
-    val horario: String,
-    val rating: String
-)
-
 @Composable
 fun HomeClientScreen(
 
@@ -63,6 +47,8 @@ fun HomeClientScreen(
     onNavigateToAppointments: () -> Unit,
 
     onNavigateToFavorites: () -> Unit,
+
+    onNavigateToBusiness: (String) -> Unit,
 
     viewModel: HomeClientViewModel = viewModel()
 
@@ -82,6 +68,14 @@ fun HomeClientScreen(
                 .weight(1f)
         ) {
 
+
+            AppHeader(
+                userName = uiState.userName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -93,16 +87,6 @@ fun HomeClientScreen(
                 item {
 
                     Spacer(modifier = Modifier.height(12.dp))
-                }
-
-                item {
-
-                    AppHeader(
-                        userName = uiState.userName,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 6.dp)
-                    )
                 }
 
                 item {
@@ -138,7 +122,15 @@ fun HomeClientScreen(
 
                 items(uiState.businesses) { negocio ->
 
-                    BusinessCard(negocio)
+                    BusinessCard(
+                        negocio = negocio,
+                        onClick = {
+
+                            onNavigateToBusiness(
+                                negocio.negocioId
+                            )
+                        }
+                    )
                 }
 
                 item {
