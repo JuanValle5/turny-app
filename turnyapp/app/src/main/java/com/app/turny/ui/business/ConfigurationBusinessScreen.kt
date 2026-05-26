@@ -3,6 +3,8 @@ package com.app.turny.ui.business
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -12,6 +14,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +43,8 @@ fun ConfigurationBusinessScreen(
     viewModel: ConfigurationBusinessViewModel =
         viewModel()
 ) {
+    val uiState by
+    viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -54,138 +60,180 @@ fun ConfigurationBusinessScreen(
 
             // HEADER
             AppHeader(
-                userName = "Barbería El Rey",
+                userName = uiState.businessName,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 18.dp)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Column(
+            LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
                     .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                Text(
-                    text = "Mi perfil",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                // PROFILE IMAGE
-                Box(
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFD9E6FF))
-                        .align(Alignment.CenterHorizontally),
-
-                    contentAlignment = Alignment.Center
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.Person,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier.size(70.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                Text(
-                    text = "Barbería El Rey",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 34.sp,
-                    modifier = Modifier.align(
-                        Alignment.CenterHorizontally
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Text(
-                    text = "Datos del negocio",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                ProfileInfoRow(
-                    label = "Nombre propietario",
-                    value = "Pedro López"
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                ProfileInfoRow(
-                    label = "Nombre negocio",
-                    value = "Barbería El Rey"
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                ProfileInfoRow(
-                    label = "Correo electrónico",
-                    value = "barberiaelrey@gmail.com"
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                ProfileInfoRow(
-                    label = "Teléfono",
-                    value = "+57 357 942 6907"
-                )
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                ProfileInfoRow(
-                    label = "Dirección",
-                    value = "Cali, Colombia"
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // LOGOUT BUTTON
-                Button(
-                    onClick = {
-
-                        viewModel.logout {
-
-                            onLogout()
-                        }
-                    },
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(54.dp)
-                        .border(
-                            width = 1.dp,
-                            color = Color.Red,
-                            shape = RoundedCornerShape(14.dp)
-                        ),
-
-                    shape = RoundedCornerShape(14.dp),
-
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
-                    )
-                ) {
-
+                item {
                     Text(
-                        text = "Cerrar Sesión",
-                        color = Color.Red,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp
+                        text = "Mi perfil",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                }
+
+                item {
+                    // PROFILE IMAGE
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFD9E6FF))
+                            .align(Alignment.CenterHorizontally),
+
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier.size(70.dp)
+                        )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(18.dp))
+                }
+
+                item {
+                    Text(
+                        text = uiState.businessName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 34.sp,
+                        modifier = Modifier.align(
+                            Alignment.CenterHorizontally
+                        )
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+
+                item {
+                    Text(
+                        text = "Datos del negocio",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 15.sp
+                    )
+                }
+
+                item {
+                    ProfileInfoRow(
+                        label = "Nombre propietario",
+                        value = uiState.ownerName
+                    )
+                }
+
+                item {
+                    ProfileInfoRow(
+                        label = "Nombre negocio",
+                        value = uiState.businessName
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Correo electrónico",
+                        value = uiState.email
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Teléfono",
+                        value = uiState.phone
+                    )
+                }
+
+                item {
+                    ProfileInfoRow(
+                        label = "Dirección",
+                        value =
+                            "${uiState.address}, ${uiState.city}"
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "WhatsApp",
+                        value = uiState.whatsapp
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Categoría",
+                        value = uiState.category
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "WhatsApp",
+                        value = uiState.whatsapp
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Sitio web",
+                        value = uiState.website
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Código negocio",
+                        value = uiState.businessCode
+                    )
+                }
+
+                item {
+                    // LOGOUT BUTTON
+                    Button(
+                        onClick = {
+
+                            viewModel.logout {
+
+                                onLogout()
+                            }
+                        },
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(54.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Red,
+                                shape = RoundedCornerShape(14.dp)
+                            ),
+
+                        shape = RoundedCornerShape(14.dp),
+
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White
+                        )
+                    ) {
+
+                        Text(
+                            text = "Cerrar Sesión",
+                            color = Color.Red,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
             }
         }
 
