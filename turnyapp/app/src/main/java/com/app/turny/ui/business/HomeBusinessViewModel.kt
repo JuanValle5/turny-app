@@ -30,7 +30,20 @@ class HomeBusinessViewModel(
         loadDashboard()
     }
 
-    private fun loadDashboard() {
+    fun selectDate(
+        date: LocalDate
+    ) {
+
+        _uiState.value =
+            _uiState.value.copy(
+                selectedDate = date
+            )
+
+        loadDashboard(date)
+    }
+    private fun loadDashboard(
+        date: LocalDate = LocalDate.now()
+    ) {
 
         viewModelScope.launch {
 
@@ -54,7 +67,7 @@ class HomeBusinessViewModel(
                 }
 
                 val today =
-                    LocalDate.now().toString()
+                    date.toString()
 
                 val appointments =
                     appointmentRepository
@@ -81,6 +94,10 @@ class HomeBusinessViewModel(
                     _uiState.value.copy(
 
                         userName = userName,
+
+                        selectedDate = date,
+
+                        appointments = appointments,
 
                         totalAppointments =
                             appointments.size,

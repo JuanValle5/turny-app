@@ -4,6 +4,7 @@ package com.app.turny.ui.business
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -46,6 +47,7 @@ import com.app.turny.ui.components.cards.AppointmentBusinessCard
 import com.app.turny.ui.components.cards.AppointmentStatus
 import com.app.turny.ui.components.cards.StatsCardsSection
 import com.app.turny.ui.components.structure.AppHeader
+import java.time.LocalDate
 
 @Composable
 fun HomeBusinessScreen2(
@@ -58,15 +60,31 @@ fun HomeBusinessScreen2(
     val uiState by
     viewModel.uiState.collectAsState()
 
-    val weekDays = listOf(
-        CalendarDay("mraz", "2", false),
-        CalendarDay("Mar", "3", false),
-        CalendarDay("Mié", "4", false),
-        CalendarDay("Jue", "5", true),
-        CalendarDay("Vie", "6", false),
-        CalendarDay("Sáb", "7", false),
-        CalendarDay("Dom", "8", false)
-    )
+    val startOfWeek =
+        uiState.selectedDate.minusDays(
+            uiState.selectedDate.dayOfWeek.value.toLong() - 1
+        )
+
+    val weekDays = (0..6).map { index ->
+
+        val date =
+            startOfWeek.plusDays(index.toLong())
+
+        DayItem2(
+
+            name =
+                date.dayOfWeek.name
+                    .take(3),
+
+            number =
+                date.dayOfMonth.toString(),
+
+            date = date,
+
+            selected =
+                date == uiState.selectedDate
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -136,7 +154,15 @@ fun HomeBusinessScreen2(
                 }
 
                 item {
-                    WeeklyCalendarCard()
+                    WeeklyCalendarCard(
+
+                        days = weekDays,
+
+                        onDateSelected = { date ->
+
+                            viewModel.selectDate(date)
+                        }
+                    )
                 }
 
                 item {
@@ -148,43 +174,73 @@ fun HomeBusinessScreen2(
                     ) {
 
                         Text(
-                            text = "Citas - hoy",
+                            text =
+                                if(
+                                    uiState.selectedDate ==
+                                    LocalDate.now()
+                                ){
+
+                                    "Citas - hoy"
+
+                                } else {
+
+                                    "Citas"
+                                },
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "5 citas",
+                            text =
+                                "${uiState.appointments.size} citas",
                             fontSize = 16.sp,
                             color = Color.Gray
                         )
                     }
                 }
 
-                item {
+                items(uiState.appointments) { appointment ->
+
+                    val status = when(
+
+                        appointment.estado.uppercase()
+                    ) {
+
+                        "PENDIENTE" -> {
+
+                            AppointmentStatus.PENDING
+                        }
+
+                        "COMPLETADA" -> {
+
+                            AppointmentStatus.COMPLETED
+                        }
+
+                        else -> {
+
+                            AppointmentStatus.CONFIRMED
+                        }
+                    }
 
                     AppointmentBusinessCard(
-                        serviceName = "Corte de cabello",
-                        clientName = "Laura Torres",
-                        hour = "09:00",
-                        duration = "30 min",
-                        status = AppointmentStatus.PENDING
+
+                        serviceName =
+                            appointment.servicioNombre,
+
+                        clientName =
+                            "Cliente",
+
+                        hour =
+                            appointment.hora.toString(),
+
+                        duration =
+                            appointment.duracionFormateada,
+
+                        status = status
                     )
 
-                    AppointmentBusinessCard(
-                        serviceName = "Barba Premium",
-                        clientName = "Carlos Ruiz",
-                        hour = "11:30",
-                        duration = "45 min",
-                        status = AppointmentStatus.COMPLETED
-                    )
-
-                    AppointmentBusinessCard(
-                        serviceName = "Tintura",
-                        clientName = "Ana Gómez",
-                        hour = "02:00",
-                        duration = "1 hora",
-                        status = AppointmentStatus.CONFIRMED
+                    Spacer(
+                        modifier = Modifier.height(14.dp)
                     )
                 }
 
@@ -238,17 +294,13 @@ fun HomeBusinessScreen2(
 }
 
 @Composable
-fun WeeklyCalendarCard() {
+fun WeeklyCalendarCard(
 
-    val days = listOf(
-        DayItem2("LUN", "25", true),
-        DayItem2("MAR", "26", false),
-        DayItem2("MIÉ", "27", false),
-        DayItem2("JUE", "28", false),
-        DayItem2("VIE", "29", false),
-        DayItem2("SÁB", "30", false),
-        DayItem2("DOM", "31", false)
-    )
+    days: List<DayItem2>,
+
+    onDateSelected: (LocalDate) -> Unit
+) {
+
 
     Card(
         modifier = Modifier
@@ -317,13 +369,29 @@ fun WeeklyCalendarCard() {
 
                 days.forEach { day ->
 
-                    if (day.selected) {
+                    if(day.selected){
 
-                        SelectedDayItem(day)
+                        SelectedDayItem(
 
-                    } else {
+                            day = day,
 
-                        NormalDayItem(day)
+                            onClick = {
+
+                                onDateSelected(day.date)
+                            }
+                        )
+
+                    }else{
+
+                        NormalDayItem(
+
+                            day = day,
+
+                            onClick = {
+
+                                onDateSelected(day.date)
+                            }
+                        )
                     }
                 }
             }
@@ -332,14 +400,20 @@ fun WeeklyCalendarCard() {
 }
 
 @Composable
-fun SelectedDayItem(day: DayItem2) {
+fun SelectedDayItem(
+    day: DayItem2,
+    onClick: () -> Unit
+) {
 
     Column(
         modifier = Modifier
             .width(88.dp)
             .height(130.dp)
             .clip(RoundedCornerShape(28.dp))
-            .background(Color(0xFF1290E8)),
+            .background(Color(0xFF1290E8))
+            .clickable{
+                onClick()
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -362,11 +436,18 @@ fun SelectedDayItem(day: DayItem2) {
     }
 }
 @Composable
-fun NormalDayItem(day: DayItem2 ) {
+fun NormalDayItem(
+    day: DayItem2,
+    onClick: () -> Unit
+) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 12.dp)
+            .clickable{
+
+                onClick()
+            }
     ) {
 
         Text(
@@ -388,8 +469,13 @@ fun NormalDayItem(day: DayItem2 ) {
 }
 
 data class DayItem2(
+
     val name: String,
+
     val number: String,
+
+    val date: LocalDate,
+
     val selected: Boolean
 )
 data class CalendarDay(
