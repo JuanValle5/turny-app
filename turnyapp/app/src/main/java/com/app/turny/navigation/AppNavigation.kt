@@ -142,7 +142,9 @@ fun AppNavigation() {
                 },
                 onNavigateToService = {
                     navController.navigate(
-                        Screen.ServiceBusiness.route
+
+                        Screen.ServicesBusiness.route
+
                     )
                 }
             )
@@ -282,26 +284,30 @@ fun AppNavigation() {
 
                 onNavigateToServices = {
                     navController.navigate(
-                        Screen.ServiceBusiness.route
+
+                        Screen.ServicesBusiness.route
                     )
                 }
             )
         }
 
         composable(
-            Screen.ServiceBusiness.route
+            Screen.ServicesBusiness.route
         ) {
             ServicesBusinessScreen(
-                onNavigateToInit = {
-                    navController.navigate(
-                        Screen.HomeBusiness2.route
-                    )
-                },
+
                 onNavigateToProfile = {
                     navController.navigate(
                         Screen.ConfigurationBusiness.route
                     )
                 },
+
+                onNavigateToInit = {
+                    navController.navigate(
+                        Screen.HomeBusiness2.route
+                    )
+                },
+
                 onNavigateToAgenda = {
 
                 }

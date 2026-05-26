@@ -27,11 +27,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.lazy.items
 import com.app.turny.ui.components.BusinessBottomNavBar
 import com.app.turny.ui.components.BusinessNavItem
 import com.app.turny.ui.components.structure.AppHeader
@@ -41,10 +46,23 @@ import com.app.turny.ui.theme.White
 
 @Composable
 fun ServicesBusinessScreen(
+
     onNavigateToProfile: () -> Unit,
+
     onNavigateToInit: () -> Unit,
-    onNavigateToAgenda: () -> Unit
-) {
+
+    onNavigateToAgenda: () -> Unit,
+
+    viewModel: ServicesBusinessViewModel =
+        viewModel()
+){
+    val uiState by
+    viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit){
+
+        viewModel.loadServices()
+    }
 
     Column(
         modifier = Modifier
@@ -57,7 +75,7 @@ fun ServicesBusinessScreen(
                 .weight(1f)
         ) {
             AppHeader(
-                userName = "Hard Code",
+                userName = uiState.userName,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 18.dp)
@@ -128,25 +146,18 @@ fun ServicesBusinessScreen(
                     Spacer(modifier = Modifier.height(28.dp))
                 }
 
-                item {
+                items(uiState.services) { service ->
+
                     ServiceCard(
-                        serviceName = "Corte de cabello",
-                        duration = "30 min",
-                        price = "$15"
-                    )
-                }
-                item {
-                    ServiceCard(
-                        serviceName = "Corte de cabello",
-                        duration = "30 min",
-                        price = "$15"
-                    )
-                }
-                item {
-                    ServiceCard(
-                        serviceName = "Corte de cabello",
-                        duration = "30 min",
-                        price = "$15"
+
+                        serviceName =
+                            service.nombre,
+
+                        duration =
+                            service.duracionFormateada,
+
+                        price =
+                            "$${service.precio}"
                     )
                 }
             }

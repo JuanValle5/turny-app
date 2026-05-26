@@ -7,6 +7,7 @@ import com.app.turny.data.remote.api.ProfileApiService
 import com.app.turny.data.remote.api.BusinessApiService
 import com.app.turny.data.remote.api.FavoriteApiService
 import com.app.turny.data.remote.api.ProfileBusinessApiService
+import com.app.turny.data.remote.api.ServiceApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -69,6 +70,13 @@ object RetrofitInstance {
 
         retrofit.create(
             ProfileBusinessApiService::class.java
+        )
+    }
+
+    val serviceApi: ServiceApiService by lazy {
+
+        retrofit.create(
+            ServiceApiService::class.java
         )
     }
 

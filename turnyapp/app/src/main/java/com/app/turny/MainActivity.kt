@@ -16,8 +16,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             TurnyappTheme {
 
-                //AppNavigation()
-                NewServiceScreen()
+                AppNavigation()
+                //NewServiceScreen()
                 //ServicesBusinessScreen()
                 //HomeBusinessScreen2()
             //ReservationScreen()

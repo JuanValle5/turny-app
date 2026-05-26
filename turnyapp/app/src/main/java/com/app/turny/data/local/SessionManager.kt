@@ -24,13 +24,17 @@ class SessionManager(
 
         private val USER_NAME_KEY =
             stringPreferencesKey("user_name")
+
+        private val PROFILE_ID_KEY =
+            stringPreferencesKey("profile_id")
     }
 
     // GUARDAR SESIÓN
     suspend fun saveSession(
         token: String,
         userType: String,
-        userName: String
+        userName: String,
+        profileId: String
     ) {
 
         context.dataStore.edit { preferences ->
@@ -40,6 +44,8 @@ class SessionManager(
             preferences[USER_TYPE_KEY] = userType
 
             preferences[USER_NAME_KEY] = userName
+
+            preferences[PROFILE_ID_KEY] = profileId
         }
     }
 
@@ -68,6 +74,14 @@ class SessionManager(
             context.dataStore.data.first()
 
         return preferences[USER_NAME_KEY]
+    }
+
+    suspend fun getProfileId(): String? {
+
+        val preferences =
+            context.dataStore.data.first()
+
+        return preferences[PROFILE_ID_KEY]
     }
 
     // CERRAR SESIÓN

@@ -28,6 +28,6 @@ sealed class Screen(val route: String) {
     data object ConfigurationBusiness :
         Screen("configuration_business")
 
-    data object ServiceBusiness:
-            Screen("service_business")
+    data object ServicesBusiness :
+        Screen("services_business")
 }
