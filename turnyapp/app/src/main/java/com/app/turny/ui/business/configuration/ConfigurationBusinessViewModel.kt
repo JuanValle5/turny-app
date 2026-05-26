@@ -1,4 +1,4 @@
-package com.app.turny.ui.business
+package com.app.turny.ui.business.configuration
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

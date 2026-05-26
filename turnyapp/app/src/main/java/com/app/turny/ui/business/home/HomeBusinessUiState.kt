@@ -1,4 +1,4 @@
-package com.app.turny.ui.business
+package com.app.turny.ui.business.home
 
 import com.app.turny.data.remote.dto.appointment.AppointmentResponse
 import java.time.LocalDate

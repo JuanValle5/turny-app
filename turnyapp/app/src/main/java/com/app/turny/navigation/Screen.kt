@@ -27,4 +27,7 @@ sealed class Screen(val route: String) {
 
     data object ConfigurationBusiness :
         Screen("configuration_business")
+
+    data object ServiceBusiness:
+            Screen("service_business")
 }
