@@ -1,4 +1,4 @@
-package com.app.turny.ui.components
+package com.app.turny.ui.components.input
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape

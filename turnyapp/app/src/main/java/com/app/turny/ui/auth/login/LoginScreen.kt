@@ -32,10 +32,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.R
-import com.app.turny.ui.auth.login.LoginViewModel
-import com.app.turny.ui.components.EmailField
-import com.app.turny.ui.components.PasswordField
-import com.app.turny.ui.components.PrimaryButton
+import com.app.turny.ui.components.input.EmailField
+import com.app.turny.ui.components.input.PasswordField
+import com.app.turny.ui.components.boton.PrimaryButton
 import com.app.turny.ui.components.RoleSelector
 
 @Composable

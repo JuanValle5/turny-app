@@ -11,6 +11,7 @@ import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.ConfigurationBusinessScreen
 import com.app.turny.ui.business.HomeBusinessScreen
+import com.app.turny.ui.business.HomeBusinessScreen2
 import com.app.turny.ui.client.home.HomeClientScreen
 import com.app.turny.ui.client.profile.ProfileScreen
 import com.app.turny.ui.client.appointment.AppointmentsScreen
@@ -59,7 +60,7 @@ fun AppNavigation() {
                 onBusinessLoginSuccess = {
 
                     navController.navigate(
-                        Screen.HomeBusiness.route
+                        Screen.HomeBusiness2.route
                     ) {
 
                         popUpTo(Screen.Login.route) {
@@ -118,13 +119,23 @@ fun AppNavigation() {
                 }
             )
         }
-
+/*
         composable(Screen.HomeBusiness.route) {
 
             HomeBusinessScreen(
 
                 onNavigateToConfiguration = {
 
+                    navController.navigate(
+                        Screen.ConfigurationBusiness.route
+                    )
+                }
+            )
+        }*/
+
+        composable(Screen.HomeBusiness2.route) {
+            HomeBusinessScreen2(
+                onNavigateToProfile = {
                     navController.navigate(
                         Screen.ConfigurationBusiness.route
                     )
@@ -251,6 +262,21 @@ fun AppNavigation() {
 
                         popUpTo(0)
                     }
+                },
+
+                onNavigateToInit = {
+
+                    navController.navigate(
+                        Screen.HomeBusiness2.route
+                    )
+                },
+
+                onNavigateToAgenda = {
+
+                },
+
+                onNavigateToServices = {
+
                 }
             )
         }

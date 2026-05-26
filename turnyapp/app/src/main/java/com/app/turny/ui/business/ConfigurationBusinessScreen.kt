@@ -1,225 +1,206 @@
 package com.app.turny.ui.business
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.app.turny.ui.components.BottomNavItem
-import com.app.turny.ui.components.BottomNavigationBar
-import com.app.turny.ui.theme.BorderGray
-import com.app.turny.ui.theme.GrayBg
-import com.app.turny.ui.theme.PrimaryBlue
-import com.app.turny.ui.theme.RedHard
-import com.app.turny.ui.theme.White
+import com.app.turny.ui.components.BusinessBottomNavBar
+import com.app.turny.ui.components.BusinessNavItem
+import com.app.turny.ui.components.ProfileInfoRow
+import com.app.turny.ui.components.structure.AppHeader
 
 @Composable
 fun ConfigurationBusinessScreen(
 
     onLogout: () -> Unit,
 
+    onNavigateToInit: () -> Unit,
+
+    onNavigateToAgenda: () -> Unit,
+
+    onNavigateToServices: () -> Unit,
+
     viewModel: ConfigurationBusinessViewModel =
         viewModel()
 ) {
+    val uiState by
+    viewModel.uiState.collectAsState()
 
-    Scaffold(
-        containerColor = GrayBg,
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF6F7FB))
+    ) {
 
-        bottomBar = {
-            BottomNavigationBar(
-                selectedItem = BottomNavItem.PROFILE,
-                onHomeClick = {},
-                onAgendaClick = {},
-                onServicesClick = {},
-                onProfileClick = {}
-            )
-        }
-
-    ) { padding ->
-
+        // CONTENT
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
+                .weight(1f)
         ) {
 
-            // MAIN CARD
-            Card(
-                modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = White
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp
-                )
+            // HEADER
+            AppHeader(
+                userName = uiState.businessName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                Column {
-
-                    // HEADER
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(18.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Box(
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .background(BorderGray),
-                                contentAlignment = Alignment.Center
-                            ) {
-
-                                Text(
-                                    text = "📅",
-                                    style = MaterialTheme.typography.headlineMedium
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(10.dp))
-
-                            Text(
-                                text = "Turny",
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .size(42.dp)
-                                .clip(CircleShape)
-                                .background(BorderGray),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Text(
-                                text = "AR",
-                                color = PrimaryBlue,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // TITLE
+                item {
                     Text(
                         text = "Mi perfil",
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                        style = MaterialTheme.typography.headlineMedium
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp
                     )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
+                item {
                     // PROFILE IMAGE
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .size(120.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFD9E6FF))
+                            .align(Alignment.CenterHorizontally),
+
                         contentAlignment = Alignment.Center
                     ) {
 
-                        Box(
-                            modifier = Modifier
-                                .size(128.dp)
-                                .clip(CircleShape)
-                                .background(BorderGray),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Icon(
-                                imageVector = Icons.Outlined.Person,
-                                contentDescription = null,
-                                modifier = Modifier.size(82.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // BUSINESS NAME
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        Text(
-                            text = "Barbería el Rey",
-                            style = MaterialTheme.typography.headlineMedium
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier.size(70.dp)
                         )
                     }
+                }
 
-                    Spacer(modifier = Modifier.height(34.dp))
+                item {
+                    Spacer(modifier = Modifier.height(18.dp))
+                }
 
-                    // PERSONAL DATA
-                    Column(
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    ) {
-
-                        Text(
-                            text = "Datos personales",
-                            style = MaterialTheme.typography.bodyLarge
+                item {
+                    Text(
+                        text = uiState.businessName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 34.sp,
+                        modifier = Modifier.align(
+                            Alignment.CenterHorizontally
                         )
+                    )
+                }
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
 
-                        ProfileRow(
-                            title = "Nombre Propietario",
-                            value = "Pedro López"
-                        )
+                item {
+                    Text(
+                        text = "Datos del negocio",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 15.sp
+                    )
+                }
 
-                        Spacer(modifier = Modifier.height(18.dp))
+                item {
+                    ProfileInfoRow(
+                        label = "Nombre propietario",
+                        value = uiState.ownerName
+                    )
+                }
 
-                        ProfileRow(
-                            title = "Nombre negocio",
-                            value = "barberiaelrey@gmail.com"
-                        )
+                item {
+                    ProfileInfoRow(
+                        label = "Nombre negocio",
+                        value = uiState.businessName
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Correo electrónico",
+                        value = uiState.email
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Teléfono",
+                        value = uiState.phone
+                    )
+                }
 
-                        Spacer(modifier = Modifier.height(18.dp))
+                item {
+                    ProfileInfoRow(
+                        label = "Dirección",
+                        value =
+                            "${uiState.address}, ${uiState.city}"
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "WhatsApp",
+                        value = uiState.whatsapp
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Categoría",
+                        value = uiState.category
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "WhatsApp",
+                        value = uiState.whatsapp
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Sitio web",
+                        value = uiState.website
+                    )
+                }
+                item {
+                    ProfileInfoRow(
+                        label = "Código negocio",
+                        value = uiState.businessCode
+                    )
+                }
 
-                        ProfileRow(
-                            title = "Teléfono",
-                            value = "+57  357 942 6907"
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-
+                item {
                     // LOGOUT BUTTON
-                    OutlinedButton(
+                    Button(
                         onClick = {
 
                             viewModel.logout {
@@ -227,47 +208,62 @@ fun ConfigurationBusinessScreen(
                                 onLogout()
                             }
                         },
+
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
+                            .height(54.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Red,
+                                shape = RoundedCornerShape(14.dp)
+                            ),
+
                         shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = RedHard
+
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White
                         )
                     ) {
 
                         Text(
                             text = "Cerrar Sesión",
-                            style = MaterialTheme.typography.bodyMedium
+                            color = Color.Red,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(30.dp))
                 }
+
             }
         }
-    }
-}
 
-@Composable
-fun ProfileRow(
-    title: String,
-    value: String
-) {
+        // FOOTER
+        BusinessBottomNavBar(
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+            selectedItem = BusinessNavItem.PROFILE,
 
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium
-        )
+            onItemSelected = { item ->
 
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge
+                when(item){
+
+                    BusinessNavItem.INIT -> {
+
+                        onNavigateToInit()
+                    }
+
+                    BusinessNavItem.AGENDA -> {
+
+                        onNavigateToAgenda()
+                    }
+
+                    BusinessNavItem.SERVICES -> {
+
+                        onNavigateToServices()
+                    }
+
+                    else -> {}
+                }
+            }
         )
     }
 }

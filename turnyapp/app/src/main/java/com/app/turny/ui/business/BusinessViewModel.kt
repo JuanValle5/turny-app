@@ -1,4 +1,11 @@
 package com.app.turny.ui.business
 
-class BusinessViewModel {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+
+class HomeClientViewModel(
+    application: Application
+) : AndroidViewModel(application){
+
+
 }

@@ -1,10 +1,12 @@
 package com.app.turny.data.remote
 
 import com.app.turny.data.remote.api.AppointmentApiService
+import com.app.turny.data.remote.api.AppointmentBusinessApiService
 import com.app.turny.data.remote.api.AuthApiService
 import com.app.turny.data.remote.api.ProfileApiService
 import com.app.turny.data.remote.api.BusinessApiService
 import com.app.turny.data.remote.api.FavoriteApiService
+import com.app.turny.data.remote.api.ProfileBusinessApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -51,6 +53,22 @@ object RetrofitInstance {
 
         retrofit.create(
             FavoriteApiService::class.java
+        )
+    }
+
+    val appointmentBusinessApi:
+            AppointmentBusinessApiService by lazy {
+
+        retrofit.create(
+            AppointmentBusinessApiService::class.java
+        )
+    }
+
+    val profileBusinessApi:
+            ProfileBusinessApiService by lazy {
+
+        retrofit.create(
+            ProfileBusinessApiService::class.java
         )
     }
 

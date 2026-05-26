@@ -15,9 +15,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.app.turny.ui.components.structure.AppHeader
-import com.app.turny.ui.components.CustomerBottomNavBar
-import com.app.turny.ui.components.CustomerNavItem
-import com.app.turny.ui.components.FavoriteBusinessCard
+import com.app.turny.ui.components.structure.CustomerBottomNavBar
+import com.app.turny.ui.components.structure.CustomerNavItem
+import com.app.turny.ui.components.cards.FavoriteBusinessCard
 
 @Composable
 fun FavoritesScreen(

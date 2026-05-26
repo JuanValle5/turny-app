@@ -1,6 +1,5 @@
 package com.app.turny.ui.components
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Dashboard
+import androidx.compose.material.icons.outlined.DesignServices
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material.icons.outlined.Search
@@ -23,17 +24,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-enum class CustomerNavItem {
-    EXPLORE,
-    APPOINTMENTS,
-    FAVORITES,
+enum class BusinessNavItem {
+    INIT,
+    AGENDA,
+    SERVICES,
     PROFILE
 }
 
 @Composable
-fun CustomerBottomNavBar(
-    selectedItem: CustomerNavItem,
-    onItemSelected: (CustomerNavItem) -> Unit,
+fun BusinessBottomNavBar(
+    selectedItem: BusinessNavItem,
+    onItemSelected: (BusinessNavItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -49,22 +50,22 @@ fun CustomerBottomNavBar(
     ) {
 
         BottomNavItem(
-            title = "Explorar",
-            isSelected = selectedItem == CustomerNavItem.EXPLORE,
+            title = "Inicio",
+            isSelected = selectedItem == BusinessNavItem.INIT,
             icon = {
                 Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = "Explorar"
+                    imageVector = Icons.Outlined.Dashboard,
+                    contentDescription = "Inicio"
                 )
             },
             onClick = {
-                onItemSelected(CustomerNavItem.EXPLORE)
+                onItemSelected(BusinessNavItem.INIT)
             }
         )
 
         BottomNavItem(
-            title = "Mis citas",
-            isSelected = selectedItem == CustomerNavItem.APPOINTMENTS,
+            title = "Agenda",
+            isSelected = selectedItem == BusinessNavItem.AGENDA,
             icon = {
                 Icon(
                     imageVector = Icons.Outlined.CalendarMonth,
@@ -72,27 +73,27 @@ fun CustomerBottomNavBar(
                 )
             },
             onClick = {
-                onItemSelected(CustomerNavItem.APPOINTMENTS)
+                onItemSelected(BusinessNavItem.AGENDA)
             }
         )
 
         BottomNavItem(
-            title = "Favoritos",
-            isSelected = selectedItem == CustomerNavItem.FAVORITES,
+            title = "Servicios",
+            isSelected = selectedItem == BusinessNavItem.SERVICES,
             icon = {
                 Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Favoritos"
+                    imageVector = Icons.Outlined.DesignServices,
+                    contentDescription = "Servicios"
                 )
             },
             onClick = {
-                onItemSelected(CustomerNavItem.FAVORITES)
+                onItemSelected(BusinessNavItem.SERVICES)
             }
         )
 
         BottomNavItem(
             title = "Perfil",
-            isSelected = selectedItem == CustomerNavItem.PROFILE,
+            isSelected = selectedItem == BusinessNavItem.PROFILE,
             icon = {
                 Icon(
                     imageVector = Icons.Outlined.PersonOutline,
@@ -100,14 +101,14 @@ fun CustomerBottomNavBar(
                 )
             },
             onClick = {
-                onItemSelected(CustomerNavItem.PROFILE)
+                onItemSelected(BusinessNavItem.PROFILE)
             }
         )
     }
 }
 
 @Composable
-private fun BottomNavItem(
+fun BottomNavItem(
     title: String,
     isSelected: Boolean,
     icon: @Composable () -> Unit,
@@ -141,9 +142,9 @@ private fun BottomNavItem(
                     tint = currentColor,
                     contentDescription = title,
                     imageVector = when (title) {
-                        "Explorar" -> Icons.Outlined.Search
-                        "Mis citas" -> Icons.Outlined.CalendarMonth
-                        "Favoritos" -> Icons.Outlined.FavoriteBorder
+                        "Inicio" -> Icons.Outlined.Dashboard
+                        "Agenda" -> Icons.Outlined.CalendarMonth
+                        "Servicios" -> Icons.Outlined.DesignServices
                         else -> Icons.Outlined.PersonOutline
                     }
                 )
