@@ -47,6 +47,8 @@ import com.app.turny.ui.theme.White
 @Composable
 fun ServicesBusinessScreen(
 
+    onNavigateToNewService: () -> Unit,
+
     onNavigateToProfile: () -> Unit,
 
     onNavigateToInit: () -> Unit,
@@ -114,7 +116,9 @@ fun ServicesBusinessScreen(
                         }
 
                         Button(
-                            onClick = {},
+                            onClick = {
+                                onNavigateToNewService()
+                            },
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = PrimaryBlue

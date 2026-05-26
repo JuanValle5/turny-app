@@ -1,6 +1,7 @@
 package com.app.turny.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -11,6 +12,7 @@ import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
 import com.app.turny.ui.business.configuration.ConfigurationBusinessScreen
 import com.app.turny.ui.business.home.HomeBusinessScreen2
+import com.app.turny.ui.business.service.NewServiceScreen
 import com.app.turny.ui.business.service.ServicesBusinessScreen
 import com.app.turny.ui.client.home.HomeClientScreen
 import com.app.turny.ui.client.profile.ProfileScreen
@@ -296,6 +298,13 @@ fun AppNavigation() {
         ) {
             ServicesBusinessScreen(
 
+                onNavigateToNewService = {
+
+                    navController.navigate(
+                        Screen.NewService.route
+                    )
+                },
+
                 onNavigateToProfile = {
                     navController.navigate(
                         Screen.ConfigurationBusiness.route
@@ -310,6 +319,23 @@ fun AppNavigation() {
 
                 onNavigateToAgenda = {
 
+                }
+            )
+        }
+        composable(
+            Screen.NewService.route
+        ) {
+
+            NewServiceScreen(
+
+                onServiceCreated = {
+
+                    navController.popBackStack()
+                },
+
+                onBack = {
+
+                    navController.popBackStack()
                 }
             )
         }

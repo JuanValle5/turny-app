@@ -1,7 +1,11 @@
 package com.app.turny.data.remote.api
 
+import com.app.turny.data.remote.dto.service.ServiceRequest
 import com.app.turny.data.remote.dto.service.ServiceResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ServiceApiService {
@@ -13,4 +17,15 @@ interface ServiceApiService {
         businessId: String
 
     ): List<ServiceResponse>
+
+    @POST("api/services")
+    suspend fun createService(
+
+        @Header("Authorization")
+        token: String,
+
+        @Body
+        request: ServiceRequest
+
+    ): ServiceResponse
 }
