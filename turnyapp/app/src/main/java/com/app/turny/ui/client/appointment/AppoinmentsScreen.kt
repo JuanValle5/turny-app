@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.items
 import java.time.LocalDate
-import com.app.turny.ui.components.AppointmentCard
-import com.app.turny.ui.components.CustomerBottomNavBar
-import com.app.turny.ui.components.CustomerNavItem
+import com.app.turny.ui.components.cards.AppointmentCard
+import com.app.turny.ui.components.structure.CustomerBottomNavBar
+import com.app.turny.ui.components.structure.CustomerNavItem
 import com.app.turny.ui.components.structure.AppHeader
 import com.app.turny.ui.components.tabs.AppointmentTab
 

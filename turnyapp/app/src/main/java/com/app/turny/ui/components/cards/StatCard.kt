@@ -87,23 +87,3 @@ fun StatCard(
         }
     }
 }
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFFF5F7FA,
-    showSystemUi = true
-)
-@Composable
-fun StatsCardsSectionPreview() {
-
-    MaterialTheme {
-
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color(0xFFF5F7FA)
-        ) {
-
-            StatsCardsSection()
-        }
-    }
-}

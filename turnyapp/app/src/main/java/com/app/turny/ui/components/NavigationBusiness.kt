@@ -108,7 +108,7 @@ fun BusinessBottomNavBar(
 }
 
 @Composable
-private fun BottomNavItem(
+fun BottomNavItem(
     title: String,
     isSelected: Boolean,
     icon: @Composable () -> Unit,

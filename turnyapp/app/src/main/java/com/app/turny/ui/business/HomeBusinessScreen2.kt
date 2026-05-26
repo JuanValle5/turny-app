@@ -28,6 +28,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.ui.components.BusinessBottomNavBar
 import com.app.turny.ui.components.BusinessNavItem
 import com.app.turny.ui.components.cards.AppointmentBusinessCard
@@ -45,7 +48,16 @@ import com.app.turny.ui.components.cards.StatsCardsSection
 import com.app.turny.ui.components.structure.AppHeader
 
 @Composable
-fun HomeBusinessScreen2() {
+fun HomeBusinessScreen2(
+    viewModel: HomeBusinessViewModel =
+        viewModel()
+
+    //onNavigateToProfile: () -> Unit,
+    //viewModel: BusinessViewModel = viewModel()
+) {
+
+    val uiState by
+    viewModel.uiState.collectAsState()
 
     val weekDays = listOf(
         CalendarDay("mraz", "2", false),
@@ -71,7 +83,7 @@ fun HomeBusinessScreen2() {
 
             // HEADER
             AppHeader(
-                userName = "Ana Ruiz",
+                userName = uiState.userName,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 18.dp)
@@ -111,7 +123,17 @@ fun HomeBusinessScreen2() {
                     )
                 }
                 item {
-                    StatsCardsSection()
+                    StatsCardsSection(
+
+                        total =
+                            uiState.totalAppointments,
+
+                        confirmed =
+                            uiState.confirmedAppointments,
+
+                        pending =
+                            uiState.pendingAppointments
+                    )
                 }
 
                 item {
@@ -231,6 +253,7 @@ fun HomeBusinessScreen2() {
                 }
 
                 item {
+
                     AppointmentBusinessCard(
                         serviceName = "Corte de cabello",
                         clientName = "Laura Torres",
@@ -295,126 +318,14 @@ fun HomeBusinessScreen2() {
 
                 when(item){
 
-                    else -> {}
+                    else -> {
+
+                    }
                 }
             }
         )
     }
 }
-
-@Composable
-fun AppointmentCard() {
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
-
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .width(82.dp)
-                    .height(110.dp)
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(Color(0xFFEAF4FD)),
-                contentAlignment = Alignment.Center
-            ) {
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    Text(
-                        text = "09",
-                        fontSize = 34.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF0F80D7)
-                    )
-
-                    Text(
-                        text = ":00",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF0F80D7)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(18.dp))
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-
-                Text(
-                    text = "Corte de cabello",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Carlos Mendoza",
-                    fontSize = 16.sp,
-                    color = Color(0xFF5F5F5F)
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.AccessTime,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(6.dp))
-
-                    Text(
-                        text = "30 min",
-                        fontSize = 15.sp
-                    )
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .border(
-                        width = 1.5.dp,
-                        color = Color(0xFF3F82FF),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 10.dp
-                    )
-            ) {
-
-                Text(
-                    text = "Confirmado",
-                    color = Color(0xFF3F82FF),
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp
-                )
-            }
-        }
-    }
-}
-
 
 @Composable
 fun WeeklyCalendarCard() {

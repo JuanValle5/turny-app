@@ -1,8 +1,10 @@
-package com.app.turny.ui.components
+package com.app.turny.ui.components.structure
 
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,13 +16,13 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.PersonOutline
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 enum class CustomerNavItem {
@@ -119,7 +121,7 @@ private fun BottomNavItem(
     ) {
     }*/
 
-    androidx.compose.foundation.layout.Column(
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -130,14 +132,14 @@ private fun BottomNavItem(
         val currentColor =
             if (isSelected) activeColor else inactiveColor
 
-        androidx.compose.foundation.layout.Column(
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            androidx.compose.material3.IconButton(
+            IconButton(
                 onClick = onClick
             ) {
-                androidx.compose.material3.Icon(
+                Icon(
                     tint = currentColor,
                     contentDescription = title,
                     imageVector = when (title) {
@@ -156,7 +158,7 @@ private fun BottomNavItem(
             )
 
             if (isSelected) {
-                androidx.compose.foundation.layout.Box(
+                Box(
                     modifier = Modifier
                         .padding(top = 4.dp)
                         .height(3.dp)

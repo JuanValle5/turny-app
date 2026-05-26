@@ -41,6 +41,8 @@ import com.app.turny.ui.theme.White
 @Composable
 fun ConfigurationBusinessScreen(
 
+
+
     onLogout: () -> Unit,
 
     viewModel: ConfigurationBusinessViewModel =

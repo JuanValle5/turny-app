@@ -21,7 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 @Composable
-fun StatsCardsSection() {
+fun StatsCardsSection(
+    total: Int,
+
+    confirmed: Int,
+
+    pending: Int
+) {
 
     Row(
         modifier = Modifier
@@ -35,7 +41,7 @@ fun StatsCardsSection() {
             icon = Icons.Outlined.CalendarMonth,
             iconColor = Color(0xFF0F80D7),
             iconBackground = Color(0xFFEAF4FD),
-            number = "5",
+            number = total.toString(),
             label = "Total"
         )
 
@@ -44,7 +50,7 @@ fun StatsCardsSection() {
             icon = Icons.Outlined.CheckCircle,
             iconColor = Color(0xFF10B561),
             iconBackground = Color(0xFFE8F7EF),
-            number = "2",
+            number = confirmed.toString(),
             label = "Confirmadas"
         )
 
@@ -53,7 +59,7 @@ fun StatsCardsSection() {
             icon = Icons.Outlined.AccessTime,
             iconColor = Color(0xFFE0A928),
             iconBackground = Color(0xFFF8F3E7),
-            number = "2",
+            number = pending.toString(),
             label = "Pendientes"
         )
     }

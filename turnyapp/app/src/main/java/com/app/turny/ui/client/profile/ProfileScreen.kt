@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.app.turny.ui.components.CustomerBottomNavBar
-import com.app.turny.ui.components.CustomerNavItem
+import com.app.turny.ui.components.structure.CustomerBottomNavBar
+import com.app.turny.ui.components.structure.CustomerNavItem
 import com.app.turny.ui.components.ProfileInfoRow
 import com.app.turny.ui.components.structure.AppHeader
 

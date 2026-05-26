@@ -1,4 +1,4 @@
-package com.app.turny.ui.components
+package com.app.turny.ui.components.boton
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
