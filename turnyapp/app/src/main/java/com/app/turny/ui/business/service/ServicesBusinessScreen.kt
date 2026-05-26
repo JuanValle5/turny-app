@@ -1,4 +1,4 @@
-package com.app.turny.ui.business
+package com.app.turny.ui.business.service
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccessTime
@@ -25,112 +25,72 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.app.turny.ui.components.BottomNavItem
-import com.app.turny.ui.components.BottomNavigationBar
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.lazy.items
+import com.app.turny.ui.components.BusinessBottomNavBar
+import com.app.turny.ui.components.BusinessNavItem
+import com.app.turny.ui.components.structure.AppHeader
 import com.app.turny.ui.theme.BorderGray
-import com.app.turny.ui.theme.GrayBg
 import com.app.turny.ui.theme.PrimaryBlue
 import com.app.turny.ui.theme.White
 
 @Composable
-fun ServicesBusinessScreen() {
+fun ServicesBusinessScreen(
 
-    Scaffold(
-        containerColor = GrayBg,
+    onNavigateToNewService: () -> Unit,
 
-        bottomBar = {
-            BottomNavigationBar(
-                selectedItem = BottomNavItem.SERVICES,
-                onHomeClick = {},
-                onAgendaClick = {},
-                onServicesClick = {},
-                onProfileClick = {}
-            )
-        }
+    onNavigateToProfile: () -> Unit,
 
-    ) { padding ->
+    onNavigateToInit: () -> Unit,
 
+    onNavigateToAgenda: () -> Unit,
+
+    viewModel: ServicesBusinessViewModel =
+        viewModel()
+){
+    val uiState by
+    viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit){
+
+        viewModel.loadServices()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF6F7FB))
+    ) {
+        // CONTENT
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
+                .weight(1f)
         ) {
+            AppHeader(
+                userName = uiState.userName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 18.dp)
+            )
 
-            // MAIN CARD
-            Card(
-                modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = White
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp
-                )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                Column {
-
-                    // HEADER
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(18.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Box(
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .background(BorderGray),
-                                contentAlignment = Alignment.Center
-                            ) {
-
-                                Text(
-                                    text = "📅",
-                                    style = MaterialTheme.typography.headlineMedium
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(10.dp))
-
-                            Text(
-                                text = "Turny",
-                                style = MaterialTheme.typography.headlineMedium
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .size(42.dp)
-                                .clip(CircleShape)
-                                .background(BorderGray),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Text(
-                                text = "AR",
-                                color = PrimaryBlue,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
+                item {
                     // TITLE + BUTTON
                     Row(
                         modifier = Modifier
@@ -156,7 +116,9 @@ fun ServicesBusinessScreen() {
                         }
 
                         Button(
-                            onClick = {},
+                            onClick = {
+                                onNavigateToNewService()
+                            },
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = PrimaryBlue
@@ -186,18 +148,52 @@ fun ServicesBusinessScreen() {
                     }
 
                     Spacer(modifier = Modifier.height(28.dp))
+                }
 
-                    // SERVICE CARD
+                items(uiState.services) { service ->
+
                     ServiceCard(
-                        serviceName = "Corte de cabello",
-                        duration = "60 min",
-                        price = "$ 15"
+
+                        serviceName =
+                            service.nombre,
+
+                        duration =
+                            service.duracionFormateada,
+
+                        price =
+                            "$${service.precio}"
                     )
                 }
             }
         }
+        // FOOTER
+        // BOTTOM NAVIGATION
+        BusinessBottomNavBar(
+            selectedItem = BusinessNavItem.SERVICES,
+            onItemSelected = { item ->
+
+                when(item){
+
+                    BusinessNavItem.INIT -> {
+                        onNavigateToInit()
+                    }
+                    BusinessNavItem.AGENDA -> {
+                        onNavigateToAgenda()
+                    }
+                    BusinessNavItem.PROFILE -> {
+                        onNavigateToProfile()
+                    }
+
+
+                    else -> {}
+                }
+            }
+        )
     }
+
+
 }
+
 
 @Composable
 fun ServiceCard(

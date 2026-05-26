@@ -1,6 +1,7 @@
 package com.app.turny.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -9,9 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
-import com.app.turny.ui.business.ConfigurationBusinessScreen
-import com.app.turny.ui.business.HomeBusinessScreen
-import com.app.turny.ui.business.HomeBusinessScreen2
+import com.app.turny.ui.business.configuration.ConfigurationBusinessScreen
+import com.app.turny.ui.business.home.HomeBusinessScreen2
+import com.app.turny.ui.business.service.NewServiceScreen
+import com.app.turny.ui.business.service.ServicesBusinessScreen
 import com.app.turny.ui.client.home.HomeClientScreen
 import com.app.turny.ui.client.profile.ProfileScreen
 import com.app.turny.ui.client.appointment.AppointmentsScreen
@@ -138,6 +140,13 @@ fun AppNavigation() {
                 onNavigateToProfile = {
                     navController.navigate(
                         Screen.ConfigurationBusiness.route
+                    )
+                },
+                onNavigateToService = {
+                    navController.navigate(
+
+                        Screen.ServicesBusiness.route
+
                     )
                 }
             )
@@ -276,7 +285,57 @@ fun AppNavigation() {
                 },
 
                 onNavigateToServices = {
+                    navController.navigate(
 
+                        Screen.ServicesBusiness.route
+                    )
+                }
+            )
+        }
+
+        composable(
+            Screen.ServicesBusiness.route
+        ) {
+            ServicesBusinessScreen(
+
+                onNavigateToNewService = {
+
+                    navController.navigate(
+                        Screen.NewService.route
+                    )
+                },
+
+                onNavigateToProfile = {
+                    navController.navigate(
+                        Screen.ConfigurationBusiness.route
+                    )
+                },
+
+                onNavigateToInit = {
+                    navController.navigate(
+                        Screen.HomeBusiness2.route
+                    )
+                },
+
+                onNavigateToAgenda = {
+
+                }
+            )
+        }
+        composable(
+            Screen.NewService.route
+        ) {
+
+            NewServiceScreen(
+
+                onServiceCreated = {
+
+                    navController.popBackStack()
+                },
+
+                onBack = {
+
+                    navController.popBackStack()
                 }
             )
         }

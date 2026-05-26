@@ -1,4 +1,4 @@
-package com.app.turny.ui.business
+package com.app.turny.ui.business.configuration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -60,7 +60,7 @@ fun ConfigurationBusinessScreen(
 
             // HEADER
             AppHeader(
-                userName = uiState.businessName,
+                userName = uiState.ownerName,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 18.dp)
