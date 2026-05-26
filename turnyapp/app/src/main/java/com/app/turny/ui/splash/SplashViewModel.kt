@@ -44,7 +44,7 @@ class SplashViewModel(
                     "home_client"
 
                 userType == "business" ->
-                    "home_business"
+                    "home_business2"
 
                 else -> "login"
             }

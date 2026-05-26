@@ -134,7 +134,13 @@ fun AppNavigation() {
         }*/
 
         composable(Screen.HomeBusiness2.route) {
-            HomeBusinessScreen2()
+            HomeBusinessScreen2(
+                onNavigateToProfile = {
+                    navController.navigate(
+                        Screen.ConfigurationBusiness.route
+                    )
+                }
+            )
         }
 
 
@@ -256,6 +262,21 @@ fun AppNavigation() {
 
                         popUpTo(0)
                     }
+                },
+
+                onNavigateToInit = {
+
+                    navController.navigate(
+                        Screen.HomeBusiness2.route
+                    )
+                },
+
+                onNavigateToAgenda = {
+
+                },
+
+                onNavigateToServices = {
+
                 }
             )
         }

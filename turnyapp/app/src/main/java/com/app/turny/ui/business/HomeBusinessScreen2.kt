@@ -49,10 +49,9 @@ import com.app.turny.ui.components.structure.AppHeader
 
 @Composable
 fun HomeBusinessScreen2(
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeBusinessViewModel =
         viewModel()
-
-    //onNavigateToProfile: () -> Unit,
     //viewModel: BusinessViewModel = viewModel()
 ) {
 
@@ -138,96 +137,6 @@ fun HomeBusinessScreen2(
 
                 item {
                     WeeklyCalendarCard()
-                    /*
-                    // CALENDARIO
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color.White
-                        ),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 6.dp
-                        )
-                    ) {
-
-                        Column(
-                            modifier = Modifier.padding(20.dp)
-                        ) {
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-
-                                Icon(
-                                    imageVector = Icons.Outlined.ChevronLeft,
-                                    contentDescription = null
-                                )
-
-                                Text(
-                                    text = "Febrero 2026",
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Icon(
-                                    imageVector = Icons.Outlined.ChevronRight,
-                                    contentDescription = null
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(22.dp))
-
-                            LazyRow(
-                                horizontalArrangement = Arrangement.spacedBy(20.dp)
-                            ) {
-
-                                items(weekDays) { day ->
-
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally
-                                    ) {
-
-                                        Text(
-                                            text = day.dayName,
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = Color.Black
-                                        )
-
-                                        Spacer(modifier = Modifier.height(10.dp))
-
-                                        Box(
-                                            modifier = Modifier
-                                                .size(52.dp)
-                                                .clip(CircleShape)
-                                                .background(
-                                                    if (day.selected)
-                                                        Color(0xFF3F82FF)
-                                                    else
-                                                        Color.Transparent
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-
-                                            Text(
-                                                text = day.dayNumber,
-                                                fontSize = 22.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color =
-                                                    if (day.selected)
-                                                        Color.White
-                                                    else
-                                                        Color.Black
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }*/
                 }
 
                 item {
@@ -317,10 +226,11 @@ fun HomeBusinessScreen2(
             onItemSelected = { item ->
 
                 when(item){
+                    BusinessNavItem.PROFILE -> {
 
-                    else -> {
-
+                        onNavigateToProfile()
                     }
+                    else -> {}
                 }
             }
         )
@@ -487,15 +397,3 @@ data class CalendarDay(
     val dayNumber: String,
     val selected: Boolean
 )
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFF5F6FA
-)
-@Composable
-fun HomeBusinessScreen2Preview() {
-    MaterialTheme {
-        HomeBusinessScreen2()
-    }
-}
