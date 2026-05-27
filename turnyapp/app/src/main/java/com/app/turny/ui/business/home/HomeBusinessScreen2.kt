@@ -1,6 +1,7 @@
 package com.app.turny.ui.business.home
 
-
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -125,8 +126,16 @@ fun HomeBusinessScreen2(
 
                     Spacer(modifier = Modifier.height(2.dp))
 
+                    val currentDate = LocalDate.now()
+
+                    val formatter = DateTimeFormatter.ofPattern(
+                        "EEEE, d 'de' MMMM",
+                        Locale("es", "ES")
+                    )
+
                     Text(
-                        text = "Jueves, 5 de febrero",
+                        text = currentDate.format(formatter)
+                            .replaceFirstChar { it.uppercase() },
                         fontSize = 16.sp,
                         color = Color(0xFF8A8A8A)
                     )
@@ -216,19 +225,23 @@ fun HomeBusinessScreen2(
 
                     AppointmentBusinessCard(
 
-                        serviceName =
-                            appointment.servicioNombre,
+                        serviceName = appointment.servicioNombre,
 
-                        clientName =
-                            "Cliente",
+                        clientName = "Cliente",
 
-                        hour =
-                            appointment.hora.toString(),
+                        hour = appointment.hora.toString(),
 
-                        duration =
-                            appointment.duracionFormateada,
+                        duration = appointment.duracionFormateada,
 
-                        status = status
+                        status = status,
+
+                        onComplete = {
+                            // Cambiar estado a completada
+                        },
+
+                        onCancel = {
+                            // Cancelar cita
+                        }
                     )
 
                     Spacer(
