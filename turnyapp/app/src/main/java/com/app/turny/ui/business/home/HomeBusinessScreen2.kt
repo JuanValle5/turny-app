@@ -225,19 +225,23 @@ fun HomeBusinessScreen2(
 
                     AppointmentBusinessCard(
 
-                        serviceName =
-                            appointment.servicioNombre,
+                        serviceName = appointment.servicioNombre,
 
-                        clientName =
-                            "Cliente",
+                        clientName = "Cliente",
 
-                        hour =
-                            appointment.hora.toString(),
+                        hour = appointment.hora.toString(),
 
-                        duration =
-                            appointment.duracionFormateada,
+                        duration = appointment.duracionFormateada,
 
-                        status = status
+                        status = status,
+
+                        onComplete = {
+                            // Cambiar estado a completada
+                        },
+
+                        onCancel = {
+                            // Cancelar cita
+                        }
                     )
 
                     Spacer(
