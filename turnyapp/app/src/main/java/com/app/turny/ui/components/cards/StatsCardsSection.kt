@@ -23,17 +23,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun StatsCardsSection(
     total: Int,
-
     confirmed: Int,
-
     pending: Int
 ) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
         StatCard(
@@ -51,7 +49,7 @@ fun StatsCardsSection(
             iconColor = Color(0xFF10B561),
             iconBackground = Color(0xFFE8F7EF),
             number = confirmed.toString(),
-            label = "Confirmadas"
+            label = "Confirm."
         )
 
         StatCard(
@@ -60,7 +58,7 @@ fun StatsCardsSection(
             iconColor = Color(0xFFE0A928),
             iconBackground = Color(0xFFF8F3E7),
             number = pending.toString(),
-            label = "Pendientes"
+            label = "Pend."
         )
     }
 }
