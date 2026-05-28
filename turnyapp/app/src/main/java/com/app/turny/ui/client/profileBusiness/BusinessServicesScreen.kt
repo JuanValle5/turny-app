@@ -133,7 +133,7 @@ fun BusinessServicesScreen(
             ) {
 
                 Text(
-                    text = "Uñas & Glamour",
+                    text = uiState.businessName,
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -142,7 +142,7 @@ fun BusinessServicesScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Salón de uñas",
+                    text = uiState.businessCategory,
                     color = Color.White.copy(alpha = 0.9f),
                     fontSize = 13.sp
                 )
@@ -163,7 +163,7 @@ fun BusinessServicesScreen(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = "4.9",
+                        text = uiState.rating,
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold
@@ -172,7 +172,7 @@ fun BusinessServicesScreen(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = "(203)",
+                        text = "(${uiState.reviews})",
                         color = Color.White.copy(alpha = 0.85f),
                         fontSize = 12.sp
                     )
