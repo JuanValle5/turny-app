@@ -15,6 +15,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.ui.components.cards.ServiceCard
 
 data class ServiceItem(
@@ -34,35 +38,21 @@ data class ServiceItem(
 
 @Composable
 fun BusinessServicesScreen(
-    businessId: String
-) {
 
-    val services = listOf(
-        ServiceItem(
-            title = "Manicure",
-            description = "Manicure tradicional",
-            duration = "40 min",
-            price = "18"
-        ),
-        ServiceItem(
-            title = "Pedicure",
-            description = "Pedicure completo",
-            duration = "50 min",
-            price = "22"
-        ),
-        ServiceItem(
-            title = "Uñas acrílicas",
-            description = "Aplicación completa",
-            duration = "90 min",
-            price = "45"
-        ),
-        ServiceItem(
-            title = "Nail Art",
-            description = "Diseños personalizados",
-            duration = "30 min",
-            price = "15"
+    businessId: String,
+
+    viewModel: BusinessServicesViewModel =
+        viewModel()
+){
+    val uiState by
+    viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit){
+
+        viewModel.loadServices(
+            businessId
         )
-    )
+    }
 
     Column(
         modifier = Modifier
@@ -241,16 +231,34 @@ fun BusinessServicesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 4.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
+
+            verticalArrangement =
+                Arrangement.spacedBy(12.dp),
+
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = 12.dp,
+                bottom = 20.dp
+            )
         ) {
 
-            items(services) { service ->
+            items(uiState.services) { service ->
 
                 ServiceCard(
-                    title = service.title,
-                    description = service.description,
-                    duration = service.duration,
-                    price = service.price,
+
+                    title =
+                        service.nombre,
+
+                    description =
+                        service.descripcion ?: "",
+
+                    duration =
+                        service.duracionFormateada,
+
+                    price =
+                        service.precio.toString(),
+
                     onReserveClick = {}
                 )
             }
