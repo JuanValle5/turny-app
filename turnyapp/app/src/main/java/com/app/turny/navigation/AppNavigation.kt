@@ -19,6 +19,7 @@ import com.app.turny.ui.client.profile.ProfileScreen
 import com.app.turny.ui.client.appointment.AppointmentsScreen
 import com.app.turny.ui.client.favorite.FavoritesScreen
 import com.app.turny.ui.client.profileBusiness.BusinessServicesScreen
+import com.app.turny.ui.client.reservation.ReservationScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
@@ -243,6 +244,13 @@ fun AppNavigation() {
         }
 
         composable(
+            Screen.Reservation.route
+        ) {
+
+            ReservationScreen()
+        }
+
+        composable(
             route =
                 Screen.BusinessServices.route
         ) { backStackEntry ->
@@ -253,7 +261,15 @@ fun AppNavigation() {
                     ?: ""
 
             BusinessServicesScreen(
-                businessId = businessId
+
+                businessId = businessId,
+
+                onNavigateToReservation = {
+
+                    navController.navigate(
+                        Screen.Reservation.route
+                    )
+                }
             )
         }
 

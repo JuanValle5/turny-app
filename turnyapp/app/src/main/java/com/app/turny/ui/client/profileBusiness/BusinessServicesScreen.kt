@@ -47,6 +47,8 @@ fun BusinessServicesScreen(
 
     businessId: String,
 
+    onNavigateToReservation: () -> Unit,
+
     viewModel: BusinessServicesViewModel =
         viewModel()
 ){
@@ -354,7 +356,10 @@ fun BusinessServicesScreen(
                         price =
                             service.precio.toString(),
 
-                        onReserveClick = {}
+                        onReserveClick = {
+
+                            onNavigateToReservation()
+                        }
                     )
                 }
             }
