@@ -107,6 +107,7 @@ class HomeBusinessViewModel(
 
                         pendingAppointments =
                             pending
+
                     )
 
             } catch (e: Exception) {

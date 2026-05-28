@@ -1,9 +1,12 @@
 package com.app.turny.ui.client.profileBusiness
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.turny.data.local.SessionManager
 import com.app.turny.data.remote.dto.service.ServiceResponse
 import com.app.turny.data.repository.BusinessRepositoryImpl
+import com.app.turny.data.repository.FavoriteRepositoryImpl
 import com.app.turny.data.repository.ServiceRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,22 +22,39 @@ data class BusinessServicesUiState(
 
     val reviews: Int = 0,
 
+    val isFavorite: Boolean = false,
+
     val services:
     List<ServiceResponse> = emptyList(),
+
+    val description: String = "",
+
+    val address: String = "",
+
+    val phone: String = "",
+
+    val email: String = "",
 
     val isLoading: Boolean = false,
 
     val error: String? = null
 )
 
-class BusinessServicesViewModel :
-    ViewModel() {
+class BusinessServicesViewModel(
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val sessionManager =
+        SessionManager(application)
 
     private val repository =
         ServiceRepositoryImpl()
 
     private val businessRepository =
         BusinessRepositoryImpl()
+
+    private val favoriteRepository =
+        FavoriteRepositoryImpl()
 
     private val _uiState =
         MutableStateFlow(
@@ -64,13 +84,27 @@ class BusinessServicesViewModel :
                     )
 
                 val businesses =
-                    businessRepository.getBusinesses()
+                    businessRepository
+                        .getBusinesses()
 
                 val business =
                     businesses.find {
 
-                        it.negocioId == businessId
+                        it.negocioId ==
+                                businessId
                     }
+
+                val token =
+                    sessionManager.getToken()
+                        ?: ""
+
+                val favoriteResponse =
+                    favoriteRepository.checkFavorite(
+
+                        token = token,
+
+                        negocioId = businessId
+                    )
 
                 _uiState.value =
                     _uiState.value.copy(
@@ -82,10 +116,26 @@ class BusinessServicesViewModel :
                             business?.categoria ?: "",
 
                         rating =
-                            business?.rating?.toString() ?: "0.0",
+                            business?.rating
+                                ?.toString()
+                                ?: "0.0",
 
                         reviews =
-                            business?.totalResenas ?: 0,
+                            business?.totalResenas
+                                ?: 0,
+
+                        isFavorite =
+                            favoriteResponse
+                                .esFavorito,
+
+                        description = "Sin informacion",
+
+                        address =
+                            business?.direccion ?: "",
+
+                        phone = "Sin informacion",
+
+                        email = "Sin informacion",
 
                         services = services,
 
@@ -101,6 +151,40 @@ class BusinessServicesViewModel :
 
                         isLoading = false
                     )
+            }
+        }
+    }
+
+    fun toggleFavorite(
+        businessId: String
+    ) {
+
+        viewModelScope.launch {
+
+            try {
+
+                val token =
+                    sessionManager.getToken()
+                        ?: return@launch
+
+                val response =
+                    favoriteRepository
+                        .toggleFavorite(
+
+                            token = token,
+
+                            negocioId = businessId
+                        )
+
+                _uiState.value =
+                    _uiState.value.copy(
+
+                        isFavorite =
+                            response.esFavorito
+                    )
+
+            } catch (_: Exception) {
+
             }
         }
     }

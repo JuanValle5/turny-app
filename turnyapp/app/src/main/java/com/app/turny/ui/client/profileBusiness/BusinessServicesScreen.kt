@@ -1,11 +1,14 @@
 package com.app.turny.ui.client.profileBusiness
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
@@ -18,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +58,11 @@ fun BusinessServicesScreen(
         viewModel.loadServices(
             businessId
         )
+    }
+
+    var selectedTab by remember {
+
+        mutableStateOf(0)
     }
 
     Column(
@@ -97,19 +108,44 @@ fun BusinessServicesScreen(
                 )
 
                 Row {
-
+                    //BOTON FAVORITO
                     CircleIconButton(
+
+                        onClick = {
+
+                            viewModel.toggleFavorite(
+                                businessId
+                            )
+                        },
+
                         icon = {
+
                             Icon(
-                                imageVector = Icons.Outlined.FavoriteBorder,
+
+                                imageVector =
+                                    if(uiState.isFavorite){
+
+                                        Icons.Filled.Favorite
+
+                                    } else {
+
+                                        Icons.Outlined.FavoriteBorder
+                                    },
+
                                 contentDescription = null,
-                                tint = Color.White
+
+                                tint =
+                                    if(uiState.isFavorite)
+                                        Color.Red
+                                    else
+                                        Color.White
                             )
                         }
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
+                    // BOTON COMPARTIR
                     CircleIconButton(
                         icon = {
                             Icon(
@@ -188,91 +224,300 @@ fun BusinessServicesScreen(
         ) {
 
             Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+
+                        selectedTab = 0
+                    },
+
+                horizontalAlignment =
+                    Alignment.CenterHorizontally
             ) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
+
                     text = "Servicios",
-                    color = Color(0xFF1495F1),
+
+                    color =
+                        if(selectedTab == 0)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Gray,
+
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold
+
+                    fontWeight =
+                        if(selectedTab == 0)
+                            FontWeight.SemiBold
+                        else
+                            FontWeight.Normal
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Divider(
-                    color = Color(0xFF1495F1),
+
+                    color =
+                        if(selectedTab == 0)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Transparent,
+
                     thickness = 2.dp
                 )
             }
 
             Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+
+                        selectedTab = 1
+                    },
+
+                horizontalAlignment =
+                    Alignment.CenterHorizontally
             ) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
+
                     text = "Información",
-                    color = Color.Gray,
-                    fontSize = 13.sp
+
+                    color =
+                        if(selectedTab == 1)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Gray,
+
+                    fontSize = 13.sp,
+
+                    fontWeight =
+                        if(selectedTab == 1)
+                            FontWeight.SemiBold
+                        else
+                            FontWeight.Normal
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Divider(
+
+                    color =
+                        if(selectedTab == 1)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Transparent,
+
+                    thickness = 2.dp
+                )
             }
         }
 
         // LISTA SERVICIOS
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 4.dp),
+        if(selectedTab == 0){
 
-            verticalArrangement =
-                Arrangement.spacedBy(12.dp),
+            LazyColumn(
 
-            contentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                top = 12.dp,
-                bottom = 20.dp
-            )
-        ) {
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 4.dp),
 
-            items(uiState.services) { service ->
+                verticalArrangement =
+                    Arrangement.spacedBy(12.dp),
 
-                ServiceCard(
-
-                    title =
-                        service.nombre,
-
-                    description =
-                        service.descripcion ?: "",
-
-                    duration =
-                        service.duracionFormateada,
-
-                    price =
-                        service.precio.toString(),
-
-                    onReserveClick = {}
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 12.dp,
+                    bottom = 20.dp
                 )
+            ) {
+
+                items(uiState.services) { service ->
+
+                    ServiceCard(
+
+                        title =
+                            service.nombre,
+
+                        description =
+                            service.descripcion ?: "",
+
+                        duration =
+                            service.duracionFormateada,
+
+                        price =
+                            service.precio.toString(),
+
+                        onReserveClick = {}
+                    )
+                }
             }
+
+        } else {
+
+            BusinessInfoContent(
+                uiState = uiState
+            )
         }
     }
 }
 
 @Composable
+fun BusinessInfoContent(
+    uiState: BusinessServicesUiState
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+
+        verticalArrangement =
+            Arrangement.spacedBy(16.dp)
+    ) {
+
+        // SOBRE NOSOTROS
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(20.dp)
+                )
+                .padding(18.dp)
+        ) {
+
+            Column {
+
+                Text(
+                    text = "Sobre nosotros",
+
+                    fontWeight = FontWeight.Bold,
+
+                    fontSize = 18.sp
+                )
+
+                Spacer(
+                    modifier = Modifier.height(12.dp)
+                )
+
+                Text(
+                    text =
+                        if(uiState.description.isBlank())
+                            "Sin descripción"
+                        else
+                            uiState.description,
+
+                    color = Color.DarkGray
+                )
+            }
+        }
+
+        // CONTACTO
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(20.dp)
+                )
+                .padding(18.dp)
+        ) {
+
+            Column {
+
+                Text(
+                    text = "Contacto",
+
+                    fontWeight = FontWeight.Bold,
+
+                    fontSize = 18.sp
+                )
+
+                Spacer(
+                    modifier = Modifier.height(18.dp)
+                )
+
+                InfoRow(
+                    title = "Dirección",
+                    value = uiState.address
+                )
+
+                Spacer(
+                    modifier = Modifier.height(14.dp)
+                )
+
+                InfoRow(
+                    title = "Teléfono",
+                    value = uiState.phone
+                )
+
+                Spacer(
+                    modifier = Modifier.height(14.dp)
+                )
+
+                InfoRow(
+                    title = "Email",
+                    value = uiState.email
+                )
+            }
+        }
+    }
+}
+@Composable
+fun InfoRow(
+
+    title: String,
+
+    value: String
+) {
+
+    Column {
+
+        Text(
+
+            text = title,
+
+            color = Color.Gray,
+
+            fontSize = 12.sp
+        )
+
+        Spacer(
+            modifier = Modifier.height(2.dp)
+        )
+
+        Text(
+
+            text = value,
+
+            color = Color.Black,
+
+            fontSize = 15.sp,
+
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+@Composable
 fun CircleIconButton(
+
+    onClick: () -> Unit = {},
+
     icon: @Composable () -> Unit
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = Modifier.clickable {
+
+            onClick()
+        }
             .size(34.dp)
             .clip(CircleShape)
             .background(Color.Black.copy(alpha = 0.25f)),
