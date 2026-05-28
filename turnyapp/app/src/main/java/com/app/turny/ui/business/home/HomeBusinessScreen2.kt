@@ -119,7 +119,7 @@ fun HomeBusinessScreen2(
                     // SALUDO
                     Text(
                         text = "Buen día!",
-                        fontSize = 34.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
@@ -187,7 +187,7 @@ fun HomeBusinessScreen2(
 
                                     "Citas"
                                 },
-                            fontSize = 32.sp,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -353,7 +353,7 @@ fun WeeklyCalendarCard(
                     text = "Mayo 2026",
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
-                    fontSize = 22.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF020817)
                 )
@@ -369,8 +369,7 @@ fun WeeklyCalendarCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(22.dp))
-
+            Spacer(modifier = Modifier.height(14.dp))
             // DAYS ROW
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -417,11 +416,11 @@ fun SelectedDayItem(
 
     Column(
         modifier = Modifier
-            .width(88.dp)
-            .height(130.dp)
-            .clip(RoundedCornerShape(28.dp))
+            .width(52.dp)
+            .height(90.dp)
+            .clip(RoundedCornerShape(22.dp))
             .background(Color(0xFF1290E8))
-            .clickable{
+            .clickable {
                 onClick()
             },
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -431,16 +430,16 @@ fun SelectedDayItem(
         Text(
             text = day.name,
             color = Color.White,
-            fontSize = 16.sp,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Medium
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         Text(
             text = day.number,
             color = Color.White,
-            fontSize = 38.sp,
+            fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
     }
@@ -453,9 +452,9 @@ fun NormalDayItem(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 12.dp)
-            .clickable{
-
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable {
                 onClick()
             }
     ) {
@@ -463,21 +462,20 @@ fun NormalDayItem(
         Text(
             text = day.name,
             color = Color(0xFF5B6B82),
-            fontSize = 16.sp,
+            fontSize = 11.sp,
             fontWeight = FontWeight.Medium
         )
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(
             text = day.number,
             color = Color(0xFF020817),
-            fontSize = 38.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
     }
 }
-
 data class DayItem2(
 
     val name: String,
