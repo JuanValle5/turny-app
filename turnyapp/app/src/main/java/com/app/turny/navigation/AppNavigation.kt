@@ -244,13 +244,6 @@ fun AppNavigation() {
         }
 
         composable(
-            Screen.Reservation.route
-        ) {
-
-            ReservationScreen()
-        }
-
-        composable(
             route =
                 Screen.BusinessServices.route
         ) { backStackEntry ->
@@ -261,11 +254,9 @@ fun AppNavigation() {
                     ?: ""
 
             BusinessServicesScreen(
-
                 businessId = businessId,
 
                 onNavigateToReservation = {
-
                     navController.navigate(
                         Screen.Reservation.route
                     )
@@ -354,6 +345,13 @@ fun AppNavigation() {
                     navController.popBackStack()
                 }
             )
+        }
+
+        composable(
+            Screen.Reservation.route
+        ) {
+
+            ReservationScreen()
         }
     }
 }
