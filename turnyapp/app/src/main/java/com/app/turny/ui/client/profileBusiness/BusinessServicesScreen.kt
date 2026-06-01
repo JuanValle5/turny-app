@@ -356,7 +356,10 @@ fun BusinessServicesScreen(
                         price =
                             service.precio.toString(),
 
-                        onReserveClick = {}
+                        onReserveClick = {
+
+                            onNavigateToReservation()
+                        }
                     )
                 }
             }

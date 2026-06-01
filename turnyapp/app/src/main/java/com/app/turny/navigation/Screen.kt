@@ -35,5 +35,5 @@ sealed class Screen(val route: String) {
         Screen("new_service")
 
     data object Reservation:
-            Screen("reservation")
+        Screen("reservation")
 }
