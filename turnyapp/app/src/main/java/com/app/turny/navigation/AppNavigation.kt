@@ -373,7 +373,10 @@ fun AppNavigation() {
         ) { backStackEntry ->
 
             ReservationScreen(
+                onBack = {
 
+                    navController.popBackStack()
+                },
                 businessId =
                     backStackEntry.arguments
                         ?.getString("businessId")

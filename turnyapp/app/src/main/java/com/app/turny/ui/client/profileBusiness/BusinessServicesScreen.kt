@@ -1,5 +1,12 @@
 package com.app.turny.ui.client.profileBusiness
 
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -64,6 +71,14 @@ fun BusinessServicesScreen(
 ){
     val uiState by
     viewModel.uiState.collectAsState()
+
+    var showShareDialog by remember {
+
+        mutableStateOf(false)
+    }
+
+    val context =
+        LocalContext.current
 
     LaunchedEffect(Unit){
 
@@ -159,6 +174,10 @@ fun BusinessServicesScreen(
 
                     // BOTON COMPARTIR
                     CircleIconButton(
+                        onClick = {
+
+                            showShareDialog = true
+                        },
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Share,
@@ -390,6 +409,98 @@ fun BusinessServicesScreen(
             )
         }
     }
+
+    if(showShareDialog){
+
+        AlertDialog(
+
+            onDismissRequest = {
+
+                showShareDialog = false
+            },
+
+            title = {
+
+                Text(
+                    text = "Código del negocio"
+                )
+            },
+
+            text = {
+
+                Column {
+
+                    Text(
+                        text = uiState.businessCode
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(12.dp)
+                    )
+
+                    Text(
+                        text =
+                            "Comparte este código para encontrar el negocio rápidamente."
+                    )
+                }
+            },
+
+            confirmButton = {
+
+                TextButton(
+
+                    onClick = {
+
+                        val clipboard =
+                            context.getSystemService(
+                                Context.CLIPBOARD_SERVICE
+                            ) as ClipboardManager
+
+                        val clip =
+                            ClipData.newPlainText(
+
+                                "business_code",
+
+                                uiState.businessCode
+                            )
+
+                        clipboard.setPrimaryClip(
+                            clip
+                        )
+
+                        Toast.makeText(
+
+                            context,
+
+                            "Código copiado",
+
+                            Toast.LENGTH_SHORT
+
+                        ).show()
+
+                        showShareDialog = false
+                    }
+                ) {
+
+                    Text("Copiar")
+                }
+            },
+
+            dismissButton = {
+
+                TextButton(
+
+                    onClick = {
+
+                        showShareDialog = false
+                    }
+                ) {
+
+                    Text("Cerrar")
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -493,6 +604,8 @@ fun BusinessInfoContent(
             }
         }
     }
+
+
 }
 @Composable
 fun InfoRow(

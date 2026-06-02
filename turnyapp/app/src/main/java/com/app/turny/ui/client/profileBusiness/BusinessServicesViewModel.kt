@@ -35,6 +35,8 @@ data class BusinessServicesUiState(
 
     val email: String = "",
 
+    val businessCode: String = "",
+
     val isLoading: Boolean = false,
 
     val error: String? = null
@@ -94,6 +96,12 @@ class BusinessServicesViewModel(
                                 businessId
                     }
 
+                val businessProfile =
+                    businessRepository
+                        .getBusinessProfile(
+                            businessId
+                        )
+
                 val token =
                     sessionManager.getToken()
                         ?: ""
@@ -128,14 +136,17 @@ class BusinessServicesViewModel(
                             favoriteResponse
                                 .esFavorito,
 
-                        description = "Sin informacion",
+                        description = businessProfile.descripcion ?: "",
 
                         address =
                             business?.direccion ?: "",
 
-                        phone = "Sin informacion",
+                        phone = businessProfile.telefono,
 
-                        email = "Sin informacion",
+                        email = businessProfile.email,
+
+                        businessCode =
+                            businessProfile.codigo,
 
                         services = services,
 
