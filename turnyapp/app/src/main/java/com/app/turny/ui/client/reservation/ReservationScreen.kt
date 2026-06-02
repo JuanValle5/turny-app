@@ -27,7 +27,20 @@ import com.app.turny.ui.components.cards.ReservationServiceCard
 import com.app.turny.ui.components.input.NotesInput
 
 @Composable
-fun ReservationScreen() {
+fun ReservationScreen(
+
+    businessId: String,
+
+    serviceId: String,
+
+    businessName: String,
+
+    serviceName: String,
+
+    price: String,
+
+    duration: String
+) {
 
     var notes by remember { mutableStateOf("") }
 
@@ -78,7 +91,7 @@ fun ReservationScreen() {
                     )
 
                     Text(
-                        text = "Uñas & Glamour",
+                        text = businessName,
                         fontSize = 13.sp,
                         color = Color.Gray
                     )
@@ -101,10 +114,14 @@ fun ReservationScreen() {
 
             item {
                 ReservationServiceCard(
-                    title = "Manicure",
-                    description = "Manicure tradicional",
-                    duration = "40 min",
-                    price = "18"
+
+                    title = serviceName,
+
+                    description = "",
+
+                    duration = duration,
+
+                    price = price
                 )
             }
 
@@ -204,7 +221,7 @@ fun ReservationScreen() {
                 )
 
                 Text(
-                    text = "$18",
+                    text = "$$price",
                     fontWeight = FontWeight.Bold,
                     fontSize = 28.sp
                 )

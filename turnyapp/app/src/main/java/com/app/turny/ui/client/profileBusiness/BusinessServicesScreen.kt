@@ -47,7 +47,17 @@ fun BusinessServicesScreen(
 
     businessId: String,
 
-    onNavigateToReservation: () -> Unit,
+    onNavigateToReservation: (
+
+        serviceId: String,
+
+        serviceName: String,
+
+        price: String,
+
+        duration: String
+
+    ) -> Unit,
 
     viewModel: BusinessServicesViewModel =
         viewModel()
@@ -358,7 +368,16 @@ fun BusinessServicesScreen(
 
                         onReserveClick = {
 
-                            onNavigateToReservation()
+                            onNavigateToReservation(
+
+                                service.id,
+
+                                service.nombre,
+
+                                service.precio.toString(),
+
+                                service.duracionFormateada
+                            )
                         }
                     )
                 }

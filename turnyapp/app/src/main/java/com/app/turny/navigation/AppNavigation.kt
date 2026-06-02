@@ -254,11 +254,32 @@ fun AppNavigation() {
                     ?: ""
 
             BusinessServicesScreen(
+
                 businessId = businessId,
 
                 onNavigateToReservation = {
+
+                        serviceId,
+                        serviceName,
+                        price,
+                        duration ->
+
                     navController.navigate(
-                        Screen.Reservation.route
+
+                        Screen.Reservation.createRoute(
+
+                            businessId = businessId,
+
+                            serviceId = serviceId,
+
+                            businessName = "",
+
+                            serviceName = serviceName,
+
+                            price = price,
+
+                            duration = duration
+                        )
                     )
                 }
             )
@@ -348,10 +369,41 @@ fun AppNavigation() {
         }
 
         composable(
-            Screen.Reservation.route
-        ) {
+            route = Screen.Reservation.route
+        ) { backStackEntry ->
 
-            ReservationScreen()
+            ReservationScreen(
+
+                businessId =
+                    backStackEntry.arguments
+                        ?.getString("businessId")
+                        ?: "",
+
+                serviceId =
+                    backStackEntry.arguments
+                        ?.getString("serviceId")
+                        ?: "",
+
+                businessName =
+                    backStackEntry.arguments
+                        ?.getString("businessName")
+                        ?: "",
+
+                serviceName =
+                    backStackEntry.arguments
+                        ?.getString("serviceName")
+                        ?: "",
+
+                price =
+                    backStackEntry.arguments
+                        ?.getString("price")
+                        ?: "",
+
+                duration =
+                    backStackEntry.arguments
+                        ?.getString("duration")
+                        ?: ""
+            )
         }
     }
 }
