@@ -76,4 +76,8 @@ sealed class Screen(val route: String) {
                     "$duration"
         }
     }
+
+    data object BusinessHours :
+        Screen("business_hours")
+
 }

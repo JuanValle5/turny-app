@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.turny.ui.auth.login.LoginScreen
 import com.app.turny.ui.auth.register.RegisterClientScreen
+import com.app.turny.ui.business.configuration.BusinessHoursScreen
 import com.app.turny.ui.business.configuration.ConfigurationBusinessScreen
 import com.app.turny.ui.business.home.HomeBusinessScreen2
 import com.app.turny.ui.business.service.NewServiceScreen
@@ -317,6 +318,12 @@ fun AppNavigation() {
 
                         Screen.ServicesBusiness.route
                     )
+                },
+                onNavigateToBusinessHours = {
+
+                    navController.navigate(
+                        Screen.BusinessHours.route
+                    )
                 }
             )
         }
@@ -407,6 +414,13 @@ fun AppNavigation() {
                         ?.getString("duration")
                         ?: ""
             )
+        }
+
+        composable(
+            route = Screen.BusinessHours.route
+        ) {
+
+            BusinessHoursScreen()
         }
     }
 }
