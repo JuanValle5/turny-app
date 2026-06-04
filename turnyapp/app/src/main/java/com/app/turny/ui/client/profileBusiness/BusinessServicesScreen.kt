@@ -1,11 +1,21 @@
 package com.app.turny.ui.client.profileBusiness
 
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
@@ -15,6 +25,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.turny.ui.components.cards.ServiceCard
 
 data class ServiceItem(
@@ -34,35 +51,46 @@ data class ServiceItem(
 
 @Composable
 fun BusinessServicesScreen(
-    businessId: String
-) {
 
-    val services = listOf(
-        ServiceItem(
-            title = "Manicure",
-            description = "Manicure tradicional",
-            duration = "40 min",
-            price = "18"
-        ),
-        ServiceItem(
-            title = "Pedicure",
-            description = "Pedicure completo",
-            duration = "50 min",
-            price = "22"
-        ),
-        ServiceItem(
-            title = "Uñas acrílicas",
-            description = "Aplicación completa",
-            duration = "90 min",
-            price = "45"
-        ),
-        ServiceItem(
-            title = "Nail Art",
-            description = "Diseños personalizados",
-            duration = "30 min",
-            price = "15"
+    businessId: String,
+
+    onNavigateToReservation: (
+
+        serviceId: String,
+
+        serviceName: String,
+
+        price: String,
+
+        duration: String
+
+    ) -> Unit,
+
+    viewModel: BusinessServicesViewModel =
+        viewModel()
+){
+    val uiState by
+    viewModel.uiState.collectAsState()
+
+    var showShareDialog by remember {
+
+        mutableStateOf(false)
+    }
+
+    val context =
+        LocalContext.current
+
+    LaunchedEffect(Unit){
+
+        viewModel.loadServices(
+            businessId
         )
-    )
+    }
+
+    var selectedTab by remember {
+
+        mutableStateOf(0)
+    }
 
     Column(
         modifier = Modifier
@@ -107,20 +135,49 @@ fun BusinessServicesScreen(
                 )
 
                 Row {
-
+                    //BOTON FAVORITO
                     CircleIconButton(
+
+                        onClick = {
+
+                            viewModel.toggleFavorite(
+                                businessId
+                            )
+                        },
+
                         icon = {
+
                             Icon(
-                                imageVector = Icons.Outlined.FavoriteBorder,
+
+                                imageVector =
+                                    if(uiState.isFavorite){
+
+                                        Icons.Filled.Favorite
+
+                                    } else {
+
+                                        Icons.Outlined.FavoriteBorder
+                                    },
+
                                 contentDescription = null,
-                                tint = Color.White
+
+                                tint =
+                                    if(uiState.isFavorite)
+                                        Color.Red
+                                    else
+                                        Color.White
                             )
                         }
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
+                    // BOTON COMPARTIR
                     CircleIconButton(
+                        onClick = {
+
+                            showShareDialog = true
+                        },
                         icon = {
                             Icon(
                                 imageVector = Icons.Outlined.Share,
@@ -143,7 +200,7 @@ fun BusinessServicesScreen(
             ) {
 
                 Text(
-                    text = "Uñas & Glamour",
+                    text = uiState.businessName,
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -152,7 +209,7 @@ fun BusinessServicesScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Salón de uñas",
+                    text = uiState.businessCategory,
                     color = Color.White.copy(alpha = 0.9f),
                     fontSize = 13.sp
                 )
@@ -173,7 +230,7 @@ fun BusinessServicesScreen(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = "4.9",
+                        text = uiState.rating,
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold
@@ -182,7 +239,7 @@ fun BusinessServicesScreen(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = "(203)",
+                        text = "(${uiState.reviews})",
                         color = Color.White.copy(alpha = 0.85f),
                         fontSize = 12.sp
                     )
@@ -198,73 +255,406 @@ fun BusinessServicesScreen(
         ) {
 
             Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+
+                        selectedTab = 0
+                    },
+
+                horizontalAlignment =
+                    Alignment.CenterHorizontally
             ) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
+
                     text = "Servicios",
-                    color = Color(0xFF1495F1),
+
+                    color =
+                        if(selectedTab == 0)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Gray,
+
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold
+
+                    fontWeight =
+                        if(selectedTab == 0)
+                            FontWeight.SemiBold
+                        else
+                            FontWeight.Normal
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Divider(
-                    color = Color(0xFF1495F1),
+
+                    color =
+                        if(selectedTab == 0)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Transparent,
+
                     thickness = 2.dp
                 )
             }
 
             Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+
+                        selectedTab = 1
+                    },
+
+                horizontalAlignment =
+                    Alignment.CenterHorizontally
             ) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
+
                     text = "Información",
-                    color = Color.Gray,
-                    fontSize = 13.sp
+
+                    color =
+                        if(selectedTab == 1)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Gray,
+
+                    fontSize = 13.sp,
+
+                    fontWeight =
+                        if(selectedTab == 1)
+                            FontWeight.SemiBold
+                        else
+                            FontWeight.Normal
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Divider(
+
+                    color =
+                        if(selectedTab == 1)
+                            Color(0xFF1495F1)
+                        else
+                            Color.Transparent,
+
+                    thickness = 2.dp
+                )
             }
         }
 
         // LISTA SERVICIOS
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 4.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
+        if(selectedTab == 0){
 
-            items(services) { service ->
+            LazyColumn(
 
-                ServiceCard(
-                    title = service.title,
-                    description = service.description,
-                    duration = service.duration,
-                    price = service.price,
-                    onReserveClick = {}
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 4.dp),
+
+                verticalArrangement =
+                    Arrangement.spacedBy(12.dp),
+
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 12.dp,
+                    bottom = 20.dp
                 )
+            ) {
+
+                items(uiState.services) { service ->
+
+                    ServiceCard(
+
+                        title =
+                            service.nombre,
+
+                        description =
+                            service.descripcion ?: "",
+
+                        duration =
+                            service.duracionFormateada,
+
+                        price =
+                            service.precio.toString(),
+
+                        onReserveClick = {
+
+                            onNavigateToReservation(
+
+                                service.id,
+
+                                service.nombre,
+
+                                service.precio.toString(),
+
+                                service.duracionFormateada
+                            )
+                        }
+                    )
+                }
             }
+
+        } else {
+
+            BusinessInfoContent(
+                uiState = uiState
+            )
         }
+    }
+
+    if(showShareDialog){
+
+        AlertDialog(
+
+            onDismissRequest = {
+
+                showShareDialog = false
+            },
+
+            title = {
+
+                Text(
+                    text = "Código del negocio"
+                )
+            },
+
+            text = {
+
+                Column {
+
+                    Text(
+                        text = uiState.businessCode
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(12.dp)
+                    )
+
+                    Text(
+                        text =
+                            "Comparte este código para encontrar el negocio rápidamente."
+                    )
+                }
+            },
+
+            confirmButton = {
+
+                TextButton(
+
+                    onClick = {
+
+                        val clipboard =
+                            context.getSystemService(
+                                Context.CLIPBOARD_SERVICE
+                            ) as ClipboardManager
+
+                        val clip =
+                            ClipData.newPlainText(
+
+                                "business_code",
+
+                                uiState.businessCode
+                            )
+
+                        clipboard.setPrimaryClip(
+                            clip
+                        )
+
+                        Toast.makeText(
+
+                            context,
+
+                            "Código copiado",
+
+                            Toast.LENGTH_SHORT
+
+                        ).show()
+
+                        showShareDialog = false
+                    }
+                ) {
+
+                    Text("Copiar")
+                }
+            },
+
+            dismissButton = {
+
+                TextButton(
+
+                    onClick = {
+
+                        showShareDialog = false
+                    }
+                ) {
+
+                    Text("Cerrar")
+                }
+            }
+        )
     }
 }
 
 @Composable
+fun BusinessInfoContent(
+    uiState: BusinessServicesUiState
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+
+        verticalArrangement =
+            Arrangement.spacedBy(16.dp)
+    ) {
+
+        // SOBRE NOSOTROS
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(20.dp)
+                )
+                .padding(18.dp)
+        ) {
+
+            Column {
+
+                Text(
+                    text = "Sobre nosotros",
+
+                    fontWeight = FontWeight.Bold,
+
+                    fontSize = 18.sp
+                )
+
+                Spacer(
+                    modifier = Modifier.height(12.dp)
+                )
+
+                Text(
+                    text =
+                        if(uiState.description.isBlank())
+                            "Sin descripción"
+                        else
+                            uiState.description,
+
+                    color = Color.DarkGray
+                )
+            }
+        }
+
+        // CONTACTO
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Color.White,
+                    RoundedCornerShape(20.dp)
+                )
+                .padding(18.dp)
+        ) {
+
+            Column {
+
+                Text(
+                    text = "Contacto",
+
+                    fontWeight = FontWeight.Bold,
+
+                    fontSize = 18.sp
+                )
+
+                Spacer(
+                    modifier = Modifier.height(18.dp)
+                )
+
+                InfoRow(
+                    title = "Dirección",
+                    value = uiState.address
+                )
+
+                Spacer(
+                    modifier = Modifier.height(14.dp)
+                )
+
+                InfoRow(
+                    title = "Teléfono",
+                    value = uiState.phone
+                )
+
+                Spacer(
+                    modifier = Modifier.height(14.dp)
+                )
+
+                InfoRow(
+                    title = "Email",
+                    value = uiState.email
+                )
+            }
+        }
+    }
+
+
+}
+@Composable
+fun InfoRow(
+
+    title: String,
+
+    value: String
+) {
+
+    Column {
+
+        Text(
+
+            text = title,
+
+            color = Color.Gray,
+
+            fontSize = 12.sp
+        )
+
+        Spacer(
+            modifier = Modifier.height(2.dp)
+        )
+
+        Text(
+
+            text = value,
+
+            color = Color.Black,
+
+            fontSize = 15.sp,
+
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+@Composable
 fun CircleIconButton(
+
+    onClick: () -> Unit = {},
+
     icon: @Composable () -> Unit
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = Modifier.clickable {
+
+            onClick()
+        }
             .size(34.dp)
             .clip(CircleShape)
             .background(Color.Black.copy(alpha = 0.25f)),

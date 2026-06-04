@@ -33,4 +33,47 @@ sealed class Screen(val route: String) {
 
     data object NewService :
         Screen("new_service")
+    data object Reservation :
+        Screen(
+
+            "reservation/" +
+                    "{businessId}/" +
+                    "{serviceId}/" +
+                    "{businessName}/" +
+                    "{serviceName}/" +
+                    "{price}/" +
+                    "{duration}"
+        ) {
+
+        fun createRoute(
+
+            businessId: String,
+
+            serviceId: String,
+
+            businessName: String,
+
+            serviceName: String,
+
+            price: String,
+
+            duration: String
+
+        ) : String {
+
+            return "reservation/" +
+
+                    "$businessId/" +
+
+                    "$serviceId/" +
+
+                    "$businessName/" +
+
+                    "$serviceName/" +
+
+                    "$price/" +
+
+                    "$duration"
+        }
+    }
 }

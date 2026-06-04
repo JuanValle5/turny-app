@@ -19,6 +19,7 @@ import com.app.turny.ui.client.profile.ProfileScreen
 import com.app.turny.ui.client.appointment.AppointmentsScreen
 import com.app.turny.ui.client.favorite.FavoritesScreen
 import com.app.turny.ui.client.profileBusiness.BusinessServicesScreen
+import com.app.turny.ui.client.reservation.ReservationScreen
 import com.app.turny.ui.splash.SplashViewModel
 
 @Composable
@@ -253,7 +254,34 @@ fun AppNavigation() {
                     ?: ""
 
             BusinessServicesScreen(
-                businessId = businessId
+
+                businessId = businessId,
+
+                onNavigateToReservation = {
+
+                        serviceId,
+                        serviceName,
+                        price,
+                        duration ->
+
+                    navController.navigate(
+
+                        Screen.Reservation.createRoute(
+
+                            businessId = businessId,
+
+                            serviceId = serviceId,
+
+                            businessName = "",
+
+                            serviceName = serviceName,
+
+                            price = price,
+
+                            duration = duration
+                        )
+                    )
+                }
             )
         }
 
@@ -337,6 +365,47 @@ fun AppNavigation() {
 
                     navController.popBackStack()
                 }
+            )
+        }
+
+        composable(
+            route = Screen.Reservation.route
+        ) { backStackEntry ->
+
+            ReservationScreen(
+                onBack = {
+
+                    navController.popBackStack()
+                },
+                businessId =
+                    backStackEntry.arguments
+                        ?.getString("businessId")
+                        ?: "",
+
+                serviceId =
+                    backStackEntry.arguments
+                        ?.getString("serviceId")
+                        ?: "",
+
+                businessName =
+                    backStackEntry.arguments
+                        ?.getString("businessName")
+                        ?: "",
+
+                serviceName =
+                    backStackEntry.arguments
+                        ?.getString("serviceName")
+                        ?: "",
+
+                price =
+                    backStackEntry.arguments
+                        ?.getString("price")
+                        ?: "",
+
+                duration =
+                    backStackEntry.arguments
+                        ?.getString("duration")
+                        ?: ""
             )
         }
     }
