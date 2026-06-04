@@ -1,5 +1,6 @@
 package com.app.turny.ui.business.configuration
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,75 +39,77 @@ private val DisabledCard = Color(0xFFF1F4F7)
 private val TextPrimary = Color(0xFF101828)
 private val TextSecondary = Color(0xFF667085)
 
-data class DaySchedule(
-    val shortName: String,
-    val fullName: String,
-    val enabled: Boolean,
-    val startTime: String,
-    val endTime: String,
-    val breakEnabled: Boolean = false,
-    val expanded: Boolean = false
-)
+private val AvailableHours = buildList {
+
+    for(hour in 0..22){
+
+        add(
+            String.format(
+                "%02d:00",
+                hour
+            )
+        )
+
+        if(hour < 22){
+
+            add(
+                String.format(
+                    "%02d:30",
+                    hour
+                )
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BusinessHoursScreen() {
+fun BusinessHoursScreen(
 
-    var days by remember {
-        mutableStateOf(
-            listOf(
-                DaySchedule(
-                    shortName = "Dom",
-                    fullName = "Domingo",
-                    enabled = false,
-                    startTime = "",
-                    endTime = ""
-                ),
-                DaySchedule(
-                    shortName = "Lun",
-                    fullName = "Lunes",
-                    enabled = true,
-                    startTime = "09:00",
-                    endTime = "18:00",
-                    expanded = true
-                ),
-                DaySchedule(
-                    shortName = "Mar",
-                    fullName = "Martes",
-                    enabled = true,
-                    startTime = "09:00",
-                    endTime = "18:00"
-                ),
-                DaySchedule(
-                    shortName = "Mié",
-                    fullName = "Miércoles",
-                    enabled = true,
-                    startTime = "09:00",
-                    endTime = "18:00"
-                ),
-                DaySchedule(
-                    shortName = "Jue",
-                    fullName = "Jueves",
-                    enabled = true,
-                    startTime = "09:00",
-                    endTime = "18:00"
-                ),
-                DaySchedule(
-                    shortName = "Vie",
-                    fullName = "Viernes",
-                    enabled = true,
-                    startTime = "09:00",
-                    endTime = "18:00"
-                ),
-                DaySchedule(
-                    shortName = "Sáb",
-                    fullName = "Sábado",
-                    enabled = false,
-                    startTime = "",
-                    endTime = ""
-                )
-            )
-        )
+    onBack: () -> Unit,
+
+    viewModel: BusinessHoursViewModel =
+        androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+
+    val uiState by
+    viewModel.uiState.collectAsState()
+
+    val context =
+        LocalContext.current
+    LaunchedEffect(
+        uiState.success
+    ) {
+
+        if(uiState.success){
+
+            Toast.makeText(
+
+                context,
+
+                "Horarios guardados",
+
+                Toast.LENGTH_SHORT
+
+            ).show()
+        }
+    }
+    LaunchedEffect(
+        uiState.error
+    ) {
+
+        uiState.error?.let {
+
+            Toast.makeText(
+
+                context,
+
+                it,
+
+                Toast.LENGTH_LONG
+
+            ).show()
+        }
     }
 
     Scaffold(
@@ -124,20 +128,32 @@ fun BusinessHoursScreen() {
                 ) {
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                            viewModel.saveHours()
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = PrimaryBlue
-                        )
+                        ),
+                        enabled = !uiState.isSaving
                     ) {
-                        Text(
-                            text = "Guardar horarios",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
+
+                        if(uiState.isSaving){
+
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+
+                        }else{
+
+                            Text(
+                                text = "Guardar horarios"
+                            )
+                        }
                     }
                 }
             }
@@ -168,8 +184,9 @@ fun BusinessHoursScreen() {
                     ) {
 
                         IconButton(
-                            onClick = {}
-                        ) {
+
+                            onClick = onBack
+                        ){
 
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
@@ -238,7 +255,11 @@ fun BusinessHoursScreen() {
                         Column {
 
                             Text(
-                                text = "5",
+                                text =
+                                    uiState.days.count {
+
+                                        it.enabled
+                                    }.toString(),
                                 fontSize = 34.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -253,27 +274,63 @@ fun BusinessHoursScreen() {
                 }
             }
 
-            itemsIndexed(days) { index, day ->
+            itemsIndexed(uiState.days) { index, day ->
 
                 DayCard(
+
                     day = day,
+
                     onSwitch = {
 
-                        days = days.toMutableList().apply {
-
-                            this[index] = day.copy(
-                                enabled = !day.enabled
-                            )
-                        }
+                        viewModel.toggleDay(
+                            index
+                        )
                     },
+
                     onExpand = {
 
-                        days = days.toMutableList().apply {
+                        viewModel.toggleExpand(
+                            index
+                        )
+                    },
 
-                            this[index] = day.copy(
-                                expanded = !day.expanded
-                            )
-                        }
+                    onStartTimeChange = {
+
+                        viewModel.updateStartTime(
+                            index,
+                            it
+                        )
+                    },
+
+                    onEndTimeChange = {
+
+                        viewModel.updateEndTime(
+                            index,
+                            it
+                        )
+                    },
+
+                    onBreakToggle = {
+
+                        viewModel.toggleBreak(
+                            index
+                        )
+                    },
+
+                    onBreakStartChange = {
+
+                        viewModel.updateBreakStart(
+                            index,
+                            it
+                        )
+                    },
+
+                    onBreakEndChange = {
+
+                        viewModel.updateBreakEnd(
+                            index,
+                            it
+                        )
                     }
                 )
             }
@@ -283,9 +340,22 @@ fun BusinessHoursScreen() {
 
 @Composable
 private fun DayCard(
-    day: DaySchedule,
+
+    day: BusinessHourUi,
+
     onSwitch: () -> Unit,
-    onExpand: () -> Unit
+
+    onExpand: () -> Unit,
+
+    onStartTimeChange: (String) -> Unit,
+
+    onEndTimeChange: (String) -> Unit,
+
+    onBreakToggle: () -> Unit,
+
+    onBreakStartChange: (String) -> Unit,
+
+    onBreakEndChange: (String) -> Unit
 ) {
 
     Card(
@@ -407,7 +477,14 @@ private fun DayCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
 
-                            TimeField("09:00")
+                            TimeDropdown(
+
+                                selectedTime =
+                                    day.startTime,
+
+                                onTimeSelected =
+                                    onStartTimeChange
+                            )
 
                             Spacer(modifier = Modifier.width(10.dp))
 
@@ -418,7 +495,14 @@ private fun DayCard(
 
                             Spacer(modifier = Modifier.width(10.dp))
 
-                            TimeField("18:00")
+                            TimeDropdown(
+
+                                selectedTime =
+                                    day.endTime,
+
+                                onTimeSelected =
+                                    onEndTimeChange
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -444,9 +528,72 @@ private fun DayCard(
                             Spacer(modifier = Modifier.weight(1f))
 
                             Switch(
-                                checked = false,
-                                onCheckedChange = {}
+
+                                checked =
+                                    day.breakEnabled,
+
+                                onCheckedChange = {
+
+                                    onBreakToggle()
+                                }
                             )
+
+                            AnimatedVisibility(
+                                visible = day.breakEnabled
+                            ) {
+
+                                Column {
+
+                                    Spacer(
+                                        modifier = Modifier.height(16.dp)
+                                    )
+
+                                    Text(
+                                        text = "Horario de descanso"
+                                    )
+
+                                    Spacer(
+                                        modifier = Modifier.height(12.dp)
+                                    )
+
+                                    Row {
+
+                                        TimeDropdown(
+
+                                            selectedTime =
+                                                day.breakStart,
+
+                                            onTimeSelected =
+                                                onBreakStartChange
+                                        )
+
+                                        Spacer(
+                                            modifier = Modifier.width(10.dp)
+                                        )
+
+                                        Text(
+                                            text = "a",
+                                            modifier =
+                                                Modifier.align(
+                                                    Alignment.CenterVertically
+                                                )
+                                        )
+
+                                        Spacer(
+                                            modifier = Modifier.width(10.dp)
+                                        )
+
+                                        TimeDropdown(
+
+                                            selectedTime =
+                                                day.breakEnd,
+
+                                            onTimeSelected =
+                                                onBreakEndChange
+                                        )
+                                    }
+                                }
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -475,35 +622,80 @@ private fun DayCard(
     }
 }
 
+@OptIn(
+    ExperimentalMaterial3Api::class
+)
 @Composable
-private fun TimeField(
-    time: String
+private fun TimeDropdown(
+
+    selectedTime: String,
+
+    onTimeSelected: (String) -> Unit
 ) {
 
-    Row(
-        modifier = Modifier
-            .width(140.dp)
-            .border(
-                1.dp,
-                BorderGray,
-                RoundedCornerShape(12.dp)
-            )
-            .padding(
-                horizontal = 14.dp,
-                vertical = 12.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically
+    var expanded by remember {
+
+        mutableStateOf(false)
+    }
+
+    ExposedDropdownMenuBox(
+
+        expanded = expanded,
+
+        onExpandedChange = {
+
+            expanded = !expanded
+        }
     ) {
 
-        Text(
-            text = time,
-            modifier = Modifier.weight(1f),
-            fontSize = 16.sp
+        OutlinedTextField(
+
+            value = selectedTime,
+
+            onValueChange = {},
+
+            readOnly = true,
+
+            modifier = Modifier
+                .width(140.dp)
+                .menuAnchor(),
+
+            trailingIcon = {
+
+                ExposedDropdownMenuDefaults
+                    .TrailingIcon(
+                        expanded = expanded
+                    )
+            }
         )
 
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowDown,
-            contentDescription = null
-        )
+        ExposedDropdownMenu(
+
+            expanded = expanded,
+
+            onDismissRequest = {
+
+                expanded = false
+            }
+        ) {
+
+            AvailableHours.forEach {
+
+                DropdownMenuItem(
+
+                    text = {
+
+                        Text(it)
+                    },
+
+                    onClick = {
+
+                        onTimeSelected(it)
+
+                        expanded = false
+                    }
+                )
+            }
+        }
     }
 }

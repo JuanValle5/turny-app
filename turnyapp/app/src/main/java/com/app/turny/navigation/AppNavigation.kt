@@ -420,7 +420,12 @@ fun AppNavigation() {
             route = Screen.BusinessHours.route
         ) {
 
-            BusinessHoursScreen()
+            BusinessHoursScreen(
+                onBack = {
+
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
