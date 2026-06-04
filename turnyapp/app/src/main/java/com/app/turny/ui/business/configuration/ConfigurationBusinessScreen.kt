@@ -2,12 +2,15 @@ package com.app.turny.ui.business.configuration
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -39,6 +42,8 @@ fun ConfigurationBusinessScreen(
     onNavigateToAgenda: () -> Unit,
 
     onNavigateToServices: () -> Unit,
+
+    onNavigateToBusinessHours: () -> Unit,
 
     viewModel: ConfigurationBusinessViewModel =
         viewModel()
@@ -196,6 +201,90 @@ fun ConfigurationBusinessScreen(
                         label = "Código negocio",
                         value = uiState.businessCode
                     )
+                }
+
+                item {
+
+                    Row(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = Color(0xFFE5E7EB),
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .background(
+                                Color.White,
+                                RoundedCornerShape(16.dp)
+                            )
+                            .clickable {
+
+                                onNavigateToBusinessHours()
+                            }
+                            .padding(16.dp),
+
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Box(
+
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFF1F5F9)),
+
+                            contentAlignment = Alignment.Center
+                        ) {
+
+                            Icon(
+
+                                imageVector =
+                                    Icons.Outlined.AccessTime,
+
+                                contentDescription = null,
+
+                                tint = Color(0xFF64748B)
+                            )
+                        }
+
+                        Spacer(
+                            modifier = Modifier.width(12.dp)
+                        )
+
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+
+                            Text(
+
+                                text = "Horarios",
+
+                                fontWeight = FontWeight.SemiBold,
+
+                                fontSize = 16.sp
+                            )
+
+                            Text(
+
+                                text = "Configura tu disponibilidad",
+
+                                color = Color.Gray,
+
+                                fontSize = 13.sp
+                            )
+                        }
+
+                        Icon(
+
+                            imageVector =
+                                Icons.Outlined.KeyboardArrowRight,
+
+                            contentDescription = null,
+
+                            tint = Color.Gray
+                        )
+                    }
                 }
 
                 item {
