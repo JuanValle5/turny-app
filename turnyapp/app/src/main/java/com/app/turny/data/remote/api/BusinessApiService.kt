@@ -12,6 +12,14 @@ interface BusinessApiService {
     suspend fun getBusinesses():
             List<BusinessCardResponse>
 
+    @GET("api/businesses/code/{codigo}")
+    suspend fun getBusinessByCode(
+
+        @Path("codigo")
+        codigo: String
+
+    ): BusinessCardResponse
+
     @GET("api/businesses/{negocioId}")
     suspend fun getBusinessProfile(
 

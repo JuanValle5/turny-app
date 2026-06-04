@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+
 class HomeClientViewModel(
     application: Application
 ) : AndroidViewModel(application) {
@@ -22,12 +23,48 @@ class HomeClientViewModel(
     private val _uiState =
         MutableStateFlow(HomeClientUiState())
 
+    private val _searchedBusinessId =
+        MutableStateFlow<String?>(null)
+
+    val searchedBusinessId:
+            StateFlow<String?> =
+        _searchedBusinessId
+
     val uiState: StateFlow<HomeClientUiState> =
         _uiState
 
     init {
 
         loadBusinesses()
+    }
+
+    fun searchBusinessByCode(
+        code: String
+    ) {
+
+        viewModelScope.launch {
+
+            try {
+
+                val business =
+                    repository
+                        .getBusinessByCode(
+                            code
+                        )
+
+                _searchedBusinessId.value =
+                    business.negocioId
+
+            } catch (_: Exception) {
+
+                _searchedBusinessId.value =
+                    "ERROR"
+            }
+        }
+    }
+    fun clearSearchResult() {
+
+        _searchedBusinessId.value = null
     }
 
     private fun loadBusinesses() {

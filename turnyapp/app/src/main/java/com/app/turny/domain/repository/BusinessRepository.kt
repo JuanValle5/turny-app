@@ -8,6 +8,10 @@ interface BusinessRepository {
     suspend fun getBusinesses():
             List<BusinessCardResponse>
 
+    suspend fun getBusinessByCode(
+        codigo: String
+    ): BusinessCardResponse
+
     suspend fun getBusinessProfile(
         businessId: String
     ): NegocioProfileResponse

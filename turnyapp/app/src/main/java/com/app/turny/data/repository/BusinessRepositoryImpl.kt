@@ -15,6 +15,17 @@ class BusinessRepositoryImpl : BusinessRepository {
             .getBusinesses()
     }
 
+    override suspend fun getBusinessByCode(
+        codigo: String
+    ): BusinessCardResponse {
+
+        return RetrofitInstance
+            .businessApi
+            .getBusinessByCode(
+                codigo
+            )
+    }
+
     override suspend fun getBusinessProfile(
         businessId: String
     ): NegocioProfileResponse {

@@ -1,5 +1,6 @@
 package com.app.turny.ui.client.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,11 +36,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.app.turny.ui.components.business.BusinessCard
 import com.app.turny.ui.components.structure.CustomerBottomNavBar
 import com.app.turny.ui.components.structure.CustomerNavItem
 import com.app.turny.ui.components.structure.AppHeader
-
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 @Composable
 fun HomeClientScreen(
 
@@ -55,6 +62,49 @@ fun HomeClientScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+
+    val searchedBusinessId by
+    viewModel.searchedBusinessId
+        .collectAsState()
+
+    var showCodeDialog by remember {
+
+        mutableStateOf(false)
+    }
+
+    var businessCode by remember {
+
+        mutableStateOf("")
+    }
+
+    val context =
+        LocalContext.current
+
+    LaunchedEffect(
+        searchedBusinessId
+    ) {
+
+        searchedBusinessId?.let {
+
+            if(it == "ERROR"){
+
+                Toast.makeText(
+
+                    context,
+
+                    "Negocio no encontrado",
+
+                    Toast.LENGTH_SHORT
+
+                ).show()
+
+            } else {
+
+                onNavigateToBusiness(it)
+            }
+            viewModel.clearSearchResult()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -98,7 +148,13 @@ fun HomeClientScreen(
 
                 item {
 
-                    ExploreSection()
+                    ExploreSection(
+
+                        onCodeClick = {
+
+                            showCodeDialog = true
+                        }
+                    )
                 }
 
                 item {
@@ -169,10 +225,97 @@ fun HomeClientScreen(
             }
         )
     }
+    if(showCodeDialog){
+
+        AlertDialog(
+
+            onDismissRequest = {
+
+                showCodeDialog = false
+            },
+
+            title = {
+
+                Text(
+                    text = "Ingresar código"
+                )
+            },
+
+            text = {
+
+                Column {
+
+                    Text(
+                        text =
+                            "Ingresa el código que te compartió el negocio"
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(16.dp)
+                    )
+
+                    OutlinedTextField(
+
+                        value = businessCode,
+
+                        onValueChange = {
+
+                            businessCode = it
+                        },
+
+                        modifier =
+                            Modifier.fillMaxWidth(),
+
+                        placeholder = {
+
+                            Text("EJ: BARBER123")
+                        }
+                    )
+                }
+            },
+
+            confirmButton = {
+
+                Button(
+
+                    onClick = {
+
+                        viewModel.searchBusinessByCode(
+                            businessCode
+                        )
+
+                        showCodeDialog = false
+                    }
+                ) {
+
+                    Text(
+                        text = "Buscar negocio"
+                    )
+                }
+            },
+            dismissButton = {
+
+                TextButton(
+
+                    onClick = {
+
+                        showCodeDialog = false
+                    }
+                ) {
+
+                    Text("Cancelar")
+                }
+            }
+
+
+        )
+    }
 }
 
 @Composable
-fun ExploreSection() {
+fun ExploreSection(
+    onCodeClick: () -> Unit
+) {
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -198,7 +341,9 @@ fun ExploreSection() {
         }
 
         TextButton(
-            onClick = {},
+
+            onClick = onCodeClick,
+
             modifier = Modifier
                 .border(
                     width = 1.dp,
@@ -206,7 +351,10 @@ fun ExploreSection() {
                     shape = RoundedCornerShape(14.dp)
                 )
         ) {
-            Text(text = "📷 Código")
+
+            Text(
+                text = "📷 Código"
+            )
         }
     }
 }
