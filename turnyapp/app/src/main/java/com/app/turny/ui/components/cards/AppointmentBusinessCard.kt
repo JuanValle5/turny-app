@@ -220,6 +220,131 @@ fun AppointmentBusinessCard(
                         }
                     }
                 }
+                else {
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        // Hora
+                        Box(
+                            modifier = Modifier
+                                .size(width = 88.dp, height = 120.dp)
+                                .clip(RoundedCornerShape(22.dp))
+                                .background(Color(0xFFDDEAF4)),
+                            contentAlignment = Alignment.Center
+                        ) {
+
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+
+                                Text(
+                                    text = hour.split(":")[0],
+                                    fontSize = 26.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF0D8BE5)
+                                )
+
+                                Text(
+                                    text = ":" + hour.split(":")[1],
+                                    fontSize = 18.sp,
+                                    color = Color(0xFF0D8BE5)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+
+                            Text(
+                                text = serviceName,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+
+                            Spacer(modifier = Modifier.height(14.dp))
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                Icon(
+                                    imageVector = Icons.Outlined.PersonOutline,
+                                    contentDescription = null,
+                                    tint = Color(0xFF5F6672),
+                                    modifier = Modifier.size(22.dp)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Text(
+                                    text = clientName,
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF5F6672)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                Icon(
+                                    imageVector = Icons.Outlined.AccessTime,
+                                    contentDescription = null,
+                                    tint = Color(0xFF5F6672),
+                                    modifier = Modifier.size(22.dp)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Text(
+                                    text = duration,
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF5F6672)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(30.dp))
+                                .background(statusBackground)
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(10.dp)
+                                        .clip(RoundedCornerShape(50))
+                                        .background(statusColor)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Text(
+                                    text = statusText,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = statusColor
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
