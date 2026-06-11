@@ -6,7 +6,7 @@ import org.junit.Test
 
 class HomeBusinessUiStateTest {
 
-    //Verifica que el estado de carga de la pantalla principal del negocio funcione correctamente.
+    //TEST 1 - Verifica que el estado de carga de la pantalla principal del negocio funcione correctamente.
     @Test
     fun homeBusinessStateStoresDataCorrectly() {
 
