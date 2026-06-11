@@ -13,7 +13,7 @@ val PrimaryBlue = Color(0xFF2563EB)
 val PrimaryGreen = Color(0xFF16A34A)
 
 val White = Color(0xFFFFFFFF)
-val YellowAccent = Color(0xFFF59E0B)
+val YellowAccent = Color(0xFF64748B)
 val BorderGray = Color(0xFFE2E8F0)
 val FreshGreen = Color(0xFF15803D)
 val RedHard = Color(0xFFDC2626)
