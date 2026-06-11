@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +56,7 @@ fun StatCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
+
             Box(
                 modifier = Modifier
                     .size(74.dp)
@@ -80,9 +82,11 @@ fun StatCard(
 
             Text(
                 text = label,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF556987)
+                fontSize = 14.sp,
+                color = Color(0xFF4A5D7A),
+                maxLines = 2,
+                lineHeight = 16.sp,
+                textAlign = TextAlign.Center
             )
         }
     }
