@@ -1,4 +1,4 @@
-package com.app.turny.ui.components.structure
+ package com.app.turny.ui.components.structure
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
